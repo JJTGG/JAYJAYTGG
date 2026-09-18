@@ -8,35 +8,41 @@ export default function AboutPage() {
           </p>
 
           <h1 className="mt-3 text-5xl font-semibold tracking-[-0.04em] sm:text-7xl">
-            I&apos;m JAYJAYTGG.
+            What sits behind the work.
           </h1>
 
           <p className="mt-7 max-w-2xl text-lg leading-8 text-[var(--muted)]">
-            I&apos;m a builder and developer interested in turning ideas into
-            real things — especially ideas that become systems, products, or
-            experiments.
+            I tend to follow an idea far enough that it stops being just an
+            idea. The interesting part is figuring out what it needs to become,
+            what can be tested, and what happens when it has to work in the
+            real world.
           </p>
         </div>
 
         <div className="mt-20 grid gap-16 md:grid-cols-[1fr_1.5fr]">
           <div>
             <p className="text-sm font-medium uppercase tracking-[0.2em] text-[var(--accent)]">
-              How it started
+              What keeps getting built
             </p>
           </div>
 
           <div className="space-y-6 text-base leading-8 text-[var(--muted)]">
             <p>
-              I started building websites on Wapka using a small button phone.
-              Later, I moved to Code Studio on a phone and kept learning
-              through HTML, CSS, and JavaScript.
+              The ideas that hold my attention tend to grow beyond a single
+              page or feature. They become products, tools, experiments, or
+              systems depending on what the idea actually needs.
             </p>
 
             <p>
-              Eventually I moved into GitHub, Vercel, Next.js, TypeScript, and
-              more serious development workflows. The tools changed, but the
-              basic habit stayed the same: think of something, build it, and
-              see what happens.
+              I&apos;m interested in taking something that mostly exists as a
+              thought and working out what it looks like when the pieces have
+              to connect, the assumptions get tested, and someone could
+              actually use the result.
+            </p>
+
+            <p>
+              Not every idea needs to become a product. Sometimes building it
+              is simply the quickest way to find out what the idea really is.
             </p>
           </div>
         </div>
@@ -52,32 +58,60 @@ export default function AboutPage() {
             <p>
               I think in systems. A project is rarely just a page or an
               interface to me. I&apos;m usually thinking about how the pieces
-              connect, what the underlying system should do, and whether the
-              idea survives contact with reality.
+              connect, what the underlying system should do, what happens when
+              something changes, and whether the whole thing actually holds
+              together.
             </p>
 
             <p>
-              I also like starting with very little. If an idea can be tested
-              without spending money, I&apos;d rather prove it first and spend
-              later when there&apos;s something worth investing in.
+              I like starting with constraints rather than waiting for ideal
+              conditions. If an idea can be tested with very little, I&apos;d
+              rather test it first. That makes it easier to find out what
+              matters, what can wait, and whether there is enough substance in
+              the idea to justify putting more into it.
+            </p>
+
+            <p>
+              I also prefer working from questions that I actually want
+              answered. I&apos;d rather take an idea that keeps bothering me
+              and work out what it could become than simply execute someone
+              else&apos;s specification from beginning to end.
             </p>
 
             <p className="text-[var(--foreground)]">
-              I&apos;d rather build something I dreamed up myself than execute
-              someone else&apos;s spec.
+              The implementation can change completely. The way I approach the
+              problem is usually what stays.
             </p>
           </div>
         </div>
 
-        <div className="mt-24 border border-[var(--line)] p-6 sm:p-8">
-          <p className="text-xs font-medium uppercase tracking-[0.15em] text-[var(--muted)]">
-            Current direction
-          </p>
+        <div className="mt-24 grid gap-16 border-t border-[var(--line)] pt-20 md:grid-cols-[1fr_1.5fr]">
+          <div>
+            <p className="text-sm font-medium uppercase tracking-[0.2em] text-[var(--accent)]">
+              Why TGG HUB
+            </p>
+          </div>
 
-          <p className="mt-4 max-w-3xl text-xl font-medium leading-8 sm:text-2xl">
-            Building products, systems, and experiments — and gradually
-            connecting them into something bigger.
-          </p>
+          <div className="space-y-6 text-base leading-8 text-[var(--muted)]">
+            <p>
+              TGG HUB started as a name for the things I was building. As more
+              of those things began to take shape, it became useful as
+              something larger than a name for individual projects.
+            </p>
+
+            <p>
+              Some of what I build can stand on its own. Other things make
+              more sense when they connect to something else. TGG HUB is the
+              structure around that — a place where products, experiments, and
+              systems can belong to the same ecosystem without having to become
+              the same thing.
+            </p>
+
+            <p>
+              That connection is part of what I&apos;m working out through the
+              projects themselves.
+            </p>
+          </div>
         </div>
       </section>
     </main>
