@@ -175,6 +175,63 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+            <section className="border-t border-[var(--line)]">
+        <div className="mx-auto max-w-6xl px-5 py-20">
+          <div className="max-w-2xl">
+            <p className="text-sm font-medium uppercase tracking-[0.2em] text-[var(--accent)]">
+              Experiments
+            </p>
+
+            <h2 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">
+              Things I build to see what happens.
+            </h2>
+
+            <p className="mt-5 text-base leading-7 text-[var(--muted)]">
+              Not everything starts with a product plan. Some things are
+              experiments — small systems, strange ideas, and technical
+              challenges built mainly to see what&apos;s possible.
+            </p>
+          </div>
+
+          <div className="mt-10 border border-[var(--line)]">
+            <a
+              href="https://jjtgg.github.io/fake-os/"
+              target="_blank"
+              rel="noreferrer"
+              className="group block p-6 transition-colors hover:bg-[#0b0f15] sm:p-8"
+            >
+              <div className="flex items-start justify-between gap-6">
+                <div>
+                  <p className="text-xs font-medium uppercase tracking-[0.15em] text-[var(--muted)]">
+                    Browser experiment
+                  </p>
+
+                  <h3 className="mt-3 text-xl font-semibold">
+                    Fake OS
+                  </h3>
+
+                  <p className="mt-3 max-w-2xl text-sm leading-6 text-[var(--muted)]">
+                    A browser-based fake operating system built with vanilla
+                    HTML, CSS, and JavaScript.
+                  </p>
+                </div>
+
+                <span className="text-[var(--muted)] transition-transform group-hover:translate-x-1">
+                  ↗
+                </span>
+              </div>
+            </a>
+          </div>
+
+          <a
+            href="/experiments"
+            className="mt-6 inline-block text-sm text-[var(--muted)] transition-colors hover:text-[var(--foreground)]"
+          >
+            View experiments →
+          </a>
+        </div>
+      </section>
     </main>
   );
 }
