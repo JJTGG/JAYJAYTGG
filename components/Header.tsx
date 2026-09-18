@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 
 const navigation = [
   { label: "Work", href: "/work" },
@@ -12,6 +13,7 @@ const navigation = [
 
 export default function Header() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
 
   return (
     <header className="border-b border-[var(--line)]">
@@ -21,22 +23,31 @@ export default function Header() {
             JAYJAYTGG
           </a>
 
-          <nav className="hidden gap-6 text-sm text-[var(--muted)] md:flex">
-            {navigation.map((item) => (
-              <a
-                key={item.href}
-                href={item.href}
-                className="transition-colors hover:text-[var(--foreground)]"
-              >
-                {item.label}
-              </a>
-            ))}
+          <nav className="hidden gap-6 text-sm md:flex">
+            {navigation.map((item) => {
+              const active = pathname === item.href;
+
+              return (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  className={`transition-colors ${
+                    active
+                      ? "text-[var(--foreground)]"
+                      : "text-[var(--muted)] hover:text-[var(--foreground)]"
+                  }`}
+                  aria-current={active ? "page" : undefined}
+                >
+                  {item.label}
+                </a>
+              );
+            })}
           </nav>
 
           <button
             type="button"
             onClick={() => setOpen(!open)}
-            className="text-sm text-[var(--muted)] transition-colors hover:text-[var(--foreground)] md:hidden"
+            className="px-3 py-2 text-sm text-[var(--muted)] transition-colors hover:text-[var(--foreground)] md:hidden"
             aria-expanded={open}
             aria-label="Toggle navigation"
           >
@@ -47,16 +58,25 @@ export default function Header() {
         {open && (
           <nav className="border-t border-[var(--line)] py-4 md:hidden">
             <div className="flex flex-col">
-              {navigation.map((item) => (
-                <a
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setOpen(false)}
-                  className="border-b border-[var(--line)] py-4 text-sm text-[var(--muted)] last:border-b-0 hover:text-[var(--foreground)]"
-                >
-                  {item.label}
-                </a>
-              ))}
+              {navigation.map((item) => {
+                const active = pathname === item.href;
+
+                return (
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setOpen(false)}
+                    className={`border-b border-[var(--line)] py-4 text-sm last:border-b-0 ${
+                      active
+                        ? "text-[var(--foreground)]"
+                        : "text-[var(--muted)] hover:text-[var(--foreground)]"
+                    }`}
+                    aria-current={active ? "page" : undefined}
+                  >
+                    {item.label}
+                  </a>
+                );
+              })}
             </div>
           </nav>
         )}
