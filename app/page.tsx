@@ -6,6 +6,24 @@ const navigation = [
   { label: "Contact", href: "/contact" }
 ];
 
+const currentWork = [
+  {
+    name: "AI Arena",
+    description: "A multi-model AI workspace for running and comparing different AI providers.",
+    href: "https://ai-arena-red.vercel.app/"
+  },
+  {
+    name: "Trading Tools",
+    description: "A trading decision-support platform built around calculators, risk tools, market data, and analytics.",
+    href: "https://trading-tools-xi.vercel.app/"
+  },
+  {
+    name: "TGG HUB",
+    description: "The ecosystem connecting the products, experiments, and systems I'm building.",
+    href: "https://tgg-hub.vercel.app/"
+  }
+];
+
 export default function Home() {
   return (
     <main className="min-h-screen">
@@ -60,6 +78,62 @@ export default function Home() {
               About me
             </a>
           </div>
+        </div>
+      </section>
+
+      <section className="border-t border-[var(--line)]">
+        <div className="mx-auto max-w-6xl px-5 py-20">
+          <div className="flex items-end justify-between gap-6">
+            <div>
+              <p className="text-sm font-medium uppercase tracking-[0.2em] text-[var(--accent)]">
+                Current work
+              </p>
+
+              <h2 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">
+                Things I&apos;m building.
+              </h2>
+            </div>
+
+            <a
+              href="/work"
+              className="hidden text-sm text-[var(--muted)] transition-colors hover:text-[var(--foreground)] sm:block"
+            >
+              View all work →
+            </a>
+          </div>
+
+          <div className="mt-10 grid gap-px overflow-hidden border border-[var(--line)] bg-[var(--line)] md:grid-cols-3">
+            {currentWork.map((project) => (
+              <a
+                key={project.name}
+                href={project.href}
+                target="_blank"
+                rel="noreferrer"
+                className="group bg-[var(--background)] p-6 transition-colors hover:bg-[#0b0f15]"
+              >
+                <div className="flex items-start justify-between gap-4">
+                  <h3 className="text-lg font-semibold">
+                    {project.name}
+                  </h3>
+
+                  <span className="text-[var(--muted)] transition-transform group-hover:translate-x-1">
+                    ↗
+                  </span>
+                </div>
+
+                <p className="mt-4 text-sm leading-6 text-[var(--muted)]">
+                  {project.description}
+                </p>
+              </a>
+            ))}
+          </div>
+
+          <a
+            href="/work"
+            className="mt-6 inline-block text-sm text-[var(--muted)] transition-colors hover:text-[var(--foreground)] sm:hidden"
+          >
+            View all work →
+          </a>
         </div>
       </section>
     </main>
