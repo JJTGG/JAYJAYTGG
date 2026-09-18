@@ -232,6 +232,63 @@ export default function Home() {
           </a>
         </div>
       </section>
+
+      <section className="border-t border-[var(--line)]">
+        <div className="mx-auto max-w-6xl px-5 py-24">
+          <div className="grid gap-12 md:grid-cols-[1fr_1.5fr]">
+            <div>
+              <p className="text-sm font-medium uppercase tracking-[0.2em] text-[var(--accent)]">
+                How I build
+              </p>
+
+              <h2 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">
+                An idea is only the beginning.
+              </h2>
+            </div>
+
+            <div>
+              <p className="text-lg leading-8 text-[var(--muted)]">
+                Most of what I build starts as an idea, then turns into a
+                system, then gets reduced to something people can actually
+                use. The implementation changes; the underlying thinking
+                stays the same.
+              </p>
+
+              <div className="mt-10 grid gap-px overflow-hidden border border-[var(--line)] bg-[var(--line)] sm:grid-cols-3">
+                <div className="bg-[var(--background)] p-5">
+                  <p className="text-xs font-medium uppercase tracking-[0.15em] text-[var(--accent)]">
+                    01
+                  </p>
+                  <h3 className="mt-4 font-semibold">Idea</h3>
+                  <p className="mt-2 text-sm leading-6 text-[var(--muted)]">
+                    Find the thing worth exploring.
+                  </p>
+                </div>
+
+                <div className="bg-[var(--background)] p-5">
+                  <p className="text-xs font-medium uppercase tracking-[0.15em] text-[var(--accent)]">
+                    02
+                  </p>
+                  <h3 className="mt-4 font-semibold">System</h3>
+                  <p className="mt-2 text-sm leading-6 text-[var(--muted)]">
+                    Work out how the pieces should actually fit together.
+                  </p>
+                </div>
+
+                <div className="bg-[var(--background)] p-5">
+                  <p className="text-xs font-medium uppercase tracking-[0.15em] text-[var(--accent)]">
+                    03
+                  </p>
+                  <h3 className="mt-4 font-semibold">Reality</h3>
+                  <p className="mt-2 text-sm leading-6 text-[var(--muted)]">
+                    Reduce it until something usable exists.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
   );
 }
