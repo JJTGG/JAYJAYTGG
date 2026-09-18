@@ -136,11 +136,8 @@ export default function Home() {
           </a>
         </div>
       </section>
-    </main>
-  );
-}
 
-                 <section className="border-t border-[var(--line)]">
+      <section className="border-t border-[var(--line)]">
         <div className="mx-auto max-w-6xl px-5 py-24">
           <div className="grid gap-12 md:grid-cols-[1fr_1.4fr] md:items-end">
             <div>
@@ -178,3 +175,6 @@ export default function Home() {
           </div>
         </div>
       </section>
+    </main>
+  );
+}
