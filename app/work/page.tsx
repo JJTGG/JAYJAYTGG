@@ -1,52 +1,31 @@
 const projects = [
   {
+    number: "01",
     name: "AI Arena",
     type: "AI / Product",
     description:
-      "A multi-model AI workspace for running and comparing different AI providers.",
+      "I was already using multiple AI models at the same time. The idea of putting them together in one workspace came to me, so I started building it.",
+    status: "Ongoing",
     live: "https://ai-arena-red.vercel.app/",
     github: "https://github.com/JJTGG/ai-arena"
   },
   {
+    number: "02",
     name: "Trading Tools",
-    type: "Fintech / Tools",
+    type: "Trading / Product",
     description:
-      "A trading decision-support platform built around calculators, risk tools, market data, and analytics.",
+      "I wanted to build something around trading that was actually useful to me. I started with the decision-making side — risk, position sizing, market data, and journaling — and gradually turned those pieces into a system.",
+    status: "Ongoing",
     live: "https://trading-tools-xi.vercel.app/",
     github: "https://github.com/JJTGG/trading-tools"
   },
   {
-    name: "TGG HUB",
-    type: "Ecosystem",
-    description:
-      "The ecosystem connecting the products, experiments, and systems I'm building.",
-    live: "https://tgg-hub.vercel.app/",
-    github: "https://github.com/JJTGG/tgg-hub"
-  },
-  {
-    name: "AUREN",
-    type: "Storefront / Concept",
-    description:
-      "A premium storefront concept built to explore product presentation and ecommerce experiences.",
-    live: "https://auren-store-delta.vercel.app/",
-    github: "https://github.com/JJTGG/auren-store"
-  },
-  {
+    number: "03",
     name: "ClutchTopUp",
     type: "Gaming / Commerce",
     description:
-      "A gaming top-up platform built around game credits, ordering, and manual fulfilment.",
-    live: "https://clutchtopup.wapka.top"
-  }
-];
-
-const experiments = [
-  {
-    name: "Fake OS",
-    description:
-      "A browser-based fake operating system built with vanilla HTML, CSS, and JavaScript.",
-    live: "https://jjtgg.github.io/fake-os/",
-    github: "https://github.com/JJTGG/fake-os"
+      "The idea was to build a gaming top-up service. The first version lived on Wapka and gave the idea a real-world form. I eventually shut that version down and started rethinking the system from the ground up.",
+    status: "Currently rebuilding"
   }
 ];
 
@@ -64,104 +43,89 @@ export default function WorkPage() {
           </h1>
 
           <p className="mt-7 max-w-2xl text-lg leading-8 text-[var(--muted)]">
-            Products, systems, experiments, and ideas that made it far enough
-            to become something real.
+            Some started as ideas I couldn&apos;t leave alone. Building them
+            was how I found out what they could become.
           </p>
         </div>
 
         <div className="mt-20">
-          <p className="text-sm font-medium uppercase tracking-[0.2em] text-[var(--accent)]">
-            Built
-          </p>
-
-          <div className="mt-6 grid gap-px overflow-hidden border border-[var(--line)] bg-[var(--line)] md:grid-cols-2">
+          <div className="divide-y border-y border-[var(--line)]">
             {projects.map((project) => (
-              <article
-                key={project.name}
-                className="bg-[var(--background)] p-6 sm:p-8"
-              >
-                <p className="text-xs font-medium uppercase tracking-[0.15em] text-[var(--muted)]">
-                  {project.type}
-                </p>
+              <article key={project.name} className="py-10 sm:py-14">
+                <div className="grid gap-8 md:grid-cols-[80px_1fr]">
+                  <p className="text-sm font-medium text-[var(--muted)]">
+                    {project.number}
+                  </p>
 
-                <h2 className="mt-4 text-2xl font-semibold">
-                  {project.name}
-                </h2>
+                  <div>
+                    <div className="flex flex-col gap-3 sm:flex-row sm:items-baseline sm:justify-between">
+                      <div>
+                        <p className="text-xs font-medium uppercase tracking-[0.15em] text-[var(--muted)]">
+                          {project.type}
+                        </p>
 
-                <p className="mt-4 text-sm leading-7 text-[var(--muted)]">
-                  {project.description}
-                </p>
+                        <h2 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">
+                          {project.name}
+                        </h2>
+                      </div>
 
-                <div className="mt-7 flex flex-wrap gap-5 text-sm">
-                  <a
-                    href={project.live}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="transition-colors hover:text-[var(--accent)]"
-                  >
-                    Live ↗
-                  </a>
+                      <p className="text-sm text-[var(--muted)]">
+                        {project.status}
+                      </p>
+                    </div>
 
-                  {project.github && (
-                    <a
-                      href={project.github}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="text-[var(--muted)] transition-colors hover:text-[var(--foreground)]"
-                    >
-                      GitHub ↗
-                    </a>
-                  )}
+                    <p className="mt-6 max-w-3xl text-base leading-8 text-[var(--muted)]">
+                      {project.description}
+                    </p>
+
+                    <div className="mt-7 flex flex-wrap gap-5 text-sm">
+                      {project.live && (
+                        <a
+                          href={project.live}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="transition-colors hover:text-[var(--accent)]"
+                        >
+                          Live ↗
+                        </a>
+                      )}
+
+                      {project.github && (
+                        <a
+                          href={project.github}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-[var(--muted)] transition-colors hover:text-[var(--foreground)]"
+                        >
+                          GitHub ↗
+                        </a>
+                      )}
+                    </div>
+                  </div>
                 </div>
               </article>
             ))}
           </div>
         </div>
 
-        <div className="mt-24">
-          <p className="text-sm font-medium uppercase tracking-[0.2em] text-[var(--accent)]">
-            Experiments
-          </p>
+        <div className="mt-24 border-t border-[var(--line)] pt-16">
+          <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p className="text-sm font-medium uppercase tracking-[0.2em] text-[var(--accent)]">
+                Experiments
+              </p>
 
-          <div className="mt-6 border border-[var(--line)]">
-            {experiments.map((experiment) => (
-              <article
-                key={experiment.name}
-                className="p-6 sm:p-8"
-              >
-                <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
-                  <div>
-                    <h2 className="text-2xl font-semibold">
-                      {experiment.name}
-                    </h2>
+              <p className="mt-3 text-lg text-[var(--muted)]">
+                Not everything I build needs to become a product.
+              </p>
+            </div>
 
-                    <p className="mt-3 max-w-2xl text-sm leading-7 text-[var(--muted)]">
-                      {experiment.description}
-                    </p>
-                  </div>
-
-                  <div className="flex gap-5 text-sm">
-                    <a
-                      href={experiment.live}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="transition-colors hover:text-[var(--accent)]"
-                    >
-                      Live ↗
-                    </a>
-
-                    <a
-                      href={experiment.github}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="text-[var(--muted)] transition-colors hover:text-[var(--foreground)]"
-                    >
-                      GitHub ↗
-                    </a>
-                  </div>
-                </div>
-              </article>
-            ))}
+            <a
+              href="/experiments"
+              className="shrink-0 text-sm text-[var(--muted)] transition-colors hover:text-[var(--foreground)]"
+            >
+              Explore the experiments →
+            </a>
           </div>
         </div>
       </section>
