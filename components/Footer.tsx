@@ -1,4 +1,5 @@
 const footerLinks = [
+  { label: "Contact", href: "/contact" },
   { label: "GitHub", href: "https://github.com/JJTGG" },
   { label: "X", href: "https://x.com/JAYJAYTGG" },
   { label: "Telegram", href: "https://t.me/JAYVORTEX_WEB3" }
@@ -18,24 +19,23 @@ export default function Footer() {
             </p>
           </div>
 
-          <div className="flex gap-5 text-sm text-[var(--muted)]">
+          <nav className="flex flex-wrap gap-x-5 gap-y-3 text-sm text-[var(--muted)]">
             {footerLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                target="_blank"
-                rel="noreferrer"
+                target={link.href.startsWith("http") ? "_blank" : undefined}
+                rel={link.href.startsWith("http") ? "noreferrer" : undefined}
                 className="transition-colors hover:text-[var(--foreground)]"
               >
                 {link.label}
               </a>
             ))}
-          </div>
+          </nav>
         </div>
 
-        <div className="mt-10 flex flex-col gap-2 border-t border-[var(--line)] pt-5 text-xs text-[var(--muted)] sm:flex-row sm:items-center sm:justify-between">
-          <span>JAYJAYTGG</span>
-          <span>Built with Next.js</span>
+        <div className="mt-10 border-t border-[var(--line)] pt-5 text-xs text-[var(--muted)]">
+          © {new Date().getFullYear()} JAYJAYTGG
         </div>
       </div>
     </footer>
