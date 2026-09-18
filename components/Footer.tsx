@@ -1,6 +1,7 @@
 const footerLinks = [
   { label: "GitHub", href: "https://github.com/JJTGG" },
-  { label: "X", href: "https://x.com/JAYJAYTGG" }
+  { label: "X", href: "https://x.com/JAYJAYTGG" },
+  { label: "Telegram", href: "https://t.me/JAYVORTEX_WEB3" }
 ];
 
 export default function Footer() {
