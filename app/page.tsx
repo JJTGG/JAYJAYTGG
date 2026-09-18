@@ -139,3 +139,42 @@ export default function Home() {
     </main>
   );
 }
+
+                 <section className="border-t border-[var(--line)]">
+        <div className="mx-auto max-w-6xl px-5 py-24">
+          <div className="grid gap-12 md:grid-cols-[1fr_1.4fr] md:items-end">
+            <div>
+              <p className="text-sm font-medium uppercase tracking-[0.2em] text-[var(--accent)]">
+                TGG HUB
+              </p>
+
+              <h2 className="mt-3 text-4xl font-semibold tracking-tight sm:text-5xl">
+                The system behind the things I build.
+              </h2>
+            </div>
+
+            <div>
+              <p className="text-lg leading-8 text-[var(--muted)]">
+                TGG HUB started as a name for the things I was building.
+                It&apos;s becoming the system that connects them.
+              </p>
+
+              <p className="mt-5 max-w-2xl text-sm leading-7 text-[var(--muted)]">
+                Projects can stand on their own while still belonging to a
+                larger ecosystem. Some are products, some are experiments,
+                and some exist simply because I wanted to see if an idea
+                could work.
+              </p>
+
+              <a
+                href="https://tgg-hub.vercel.app/"
+                target="_blank"
+                rel="noreferrer"
+                className="mt-8 inline-flex border border-[var(--line)] px-5 py-3 text-sm font-medium transition-colors hover:border-[var(--muted)]"
+              >
+                Explore TGG HUB ↗
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
