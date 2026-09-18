@@ -5,7 +5,10 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "JAYJAYTGG",
-  description: "I build ideas into things that actually exist."
+  description: "I build ideas into things that actually exist.",
+  verification: {
+    google: "OJdnuEykow_C3HX6YgwzUyCKk6EOIIFkvcUXz3Bo19U"
+  }
 };
 
 export default function RootLayout({
