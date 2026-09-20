@@ -1,6 +1,5 @@
 "use client";
 
-import Script from "next/script";
 import { useState } from "react";
 
 const directLinks = [
@@ -135,19 +134,22 @@ export default function ContactPage() {
           </p>
 
           <div className="border border-[var(--line)] p-6">
-            <div
-              className="contra-hire-me-button"
-              data-analyticsUserId="63498d0a-6e49-43ac-9184-5d0a3dc7e3f0"
-              data-theme="dark"
-              data-username="jayjaytgg_tiuk6n8t"
-            />
-          </div>
+            <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+              <p className="max-w-xl text-sm leading-6 text-[var(--muted)]">
+                Not every idea needs a pitch deck. Sometimes it just needs to
+                be built.
+              </p>
 
-          <Script
-            async
-            src="https://contra.com/static/embed/sdk.js"
-            charSet="utf-8"
-          />
+              <a
+                href="https://contra.com/jayjaytgg"
+                target="_blank"
+                rel="noreferrer"
+                className="shrink-0 text-sm font-medium text-[var(--foreground)] transition-colors hover:text-[var(--accent)]"
+              >
+                Find me on Contra ↗
+              </a>
+            </div>
+          </div>
         </div>
 
         <div className="mt-16 max-w-3xl">
