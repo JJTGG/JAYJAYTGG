@@ -1,5 +1,6 @@
 "use client";
 
+import Script from "next/script";
 import { useState } from "react";
 
 const directLinks = [
@@ -126,6 +127,27 @@ export default function ContactPage() {
               </div>
             ))}
           </div>
+        </div>
+
+        <div className="mt-16 max-w-3xl">
+          <p className="mb-5 text-xs font-medium uppercase tracking-[0.15em] text-[var(--muted)]">
+            Hire me
+          </p>
+
+          <div className="border border-[var(--line)] p-6">
+            <div
+              className="contra-hire-me-button"
+              data-analyticsUserId="63498d0a-6e49-43ac-9184-5d0a3dc7e3f0"
+              data-theme="dark"
+              data-username="jayjaytgg_tiuk6n8t"
+            />
+          </div>
+
+          <Script
+            async
+            src="https://contra.com/static/embed/sdk.js"
+            charSet="utf-8"
+          />
         </div>
 
         <div className="mt-16 max-w-3xl">
