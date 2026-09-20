@@ -3,19 +3,30 @@ const currentWork = [
     name: "AI Arena",
     description:
       "A workspace for running and comparing different AI models.",
-    href: "https://ai-arena-red.vercel.app/"
+    href: "https://ai-arena-red.vercel.app/",
+    github: "https://github.com/JJTGG/ai-arena"
   },
   {
     name: "Trading Tools",
     description:
       "Tools for trading decisions, risk, market data, and analysis.",
-    href: "https://trading-tools-xi.vercel.app/"
+    href: "https://trading-tools-xi.vercel.app/",
+    github: "https://github.com/JJTGG/trading-tools"
+  }
+];
+
+const experiments = [
+  {
+    name: "AUREN",
+    description:
+      "A minimal storefront experiment exploring how a small product can become a polished web experience.",
+    href: "https://auren-store-delta.vercel.app/"
   },
   {
-    name: "TGG HUB",
+    name: "Fake OS",
     description:
-      "The system taking shape around the things I'm building.",
-    href: "/tgg-hub"
+      "A browser-based experiment built around the idea of a fake operating system.",
+    href: "https://jjtgg.github.io/fake-os/"
   }
 ];
 
@@ -53,37 +64,42 @@ export default function Home() {
 
       <section className="border-t border-[var(--line)]">
         <div className="mx-auto max-w-6xl px-5 py-20">
-          <div className="max-w-2xl">
-            <p className="text-sm font-medium uppercase tracking-[0.2em] text-[var(--accent)]">
-              What I&apos;m building
-            </p>
-          </div>
+          <p className="text-sm font-medium uppercase tracking-[0.2em] text-[var(--accent)]">
+            What I&apos;m building
+          </p>
 
-          <div className="mt-10 grid gap-px overflow-hidden border border-[var(--line)] bg-[var(--line)] md:grid-cols-3">
+          <div className="mt-10 grid gap-px overflow-hidden border border-[var(--line)] bg-[var(--line)] md:grid-cols-2">
             {currentWork.map((project) => (
-              <a
+              <div
                 key={project.name}
-                href={project.href}
-                target={project.href.startsWith("http") ? "_blank" : undefined}
-                rel={
-                  project.href.startsWith("http") ? "noreferrer" : undefined
-                }
-                className="group bg-[var(--background)] p-6 transition-colors hover:bg-[#0b0f15] sm:p-7"
+                className="bg-[var(--background)] p-6 sm:p-7"
               >
                 <div className="flex items-start justify-between gap-4">
-                  <h3 className="text-lg font-semibold">
-                    {project.name}
-                  </h3>
+                  <h3 className="text-lg font-semibold">{project.name}</h3>
 
-                  <span className="text-[var(--muted)] transition-transform group-hover:translate-x-1">
-                    ↗
-                  </span>
+                  <a
+                    href={project.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-sm text-[var(--muted)] transition-colors hover:text-[var(--foreground)]"
+                  >
+                    Live ↗
+                  </a>
                 </div>
 
                 <p className="mt-4 text-sm leading-6 text-[var(--muted)]">
                   {project.description}
                 </p>
-              </a>
+
+                <a
+                  href={project.github}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-6 inline-block text-xs text-[var(--muted)] transition-colors hover:text-[var(--foreground)]"
+                >
+                  View source →
+                </a>
+              </div>
             ))}
           </div>
 
@@ -111,7 +127,8 @@ export default function Home() {
 
             <div>
               <p className="text-lg leading-8 text-[var(--muted)]">
-                TGG HUB is the structure forming around them.
+                TGG HUB is the structure forming around the products,
+                experiments, and systems I&apos;m building.
               </p>
 
               <a
@@ -126,14 +143,14 @@ export default function Home() {
       </section>
 
       <section className="border-t border-[var(--line)]">
-        <div className="mx-auto max-w-6xl px-5 py-14">
-          <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mx-auto max-w-6xl px-5 py-20">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="text-sm font-medium uppercase tracking-[0.2em] text-[var(--accent)]">
-                EXPERIMENTS
+                Experiments
               </p>
 
-              <p className="mt-3 text-lg text-[var(--muted)]">
+              <p className="mt-3 max-w-xl text-lg leading-8 text-[var(--muted)]">
                 Not everything I build needs to become a product.
               </p>
             </div>
@@ -142,8 +159,32 @@ export default function Home() {
               href="/experiments"
               className="shrink-0 text-sm text-[var(--muted)] transition-colors hover:text-[var(--foreground)]"
             >
-              Explore the experiments →
+              Explore all experiments →
             </a>
+          </div>
+
+          <div className="mt-10 grid gap-px overflow-hidden border border-[var(--line)] bg-[var(--line)] md:grid-cols-2">
+            {experiments.map((experiment) => (
+              <a
+                key={experiment.name}
+                href={experiment.href}
+                target="_blank"
+                rel="noreferrer"
+                className="group bg-[var(--background)] p-6 transition-colors hover:bg-[#0b0f15] sm:p-7"
+              >
+                <div className="flex items-start justify-between gap-4">
+                  <h3 className="text-lg font-semibold">{experiment.name}</h3>
+
+                  <span className="text-[var(--muted)] transition-transform group-hover:translate-x-1">
+                    ↗
+                  </span>
+                </div>
+
+                <p className="mt-4 text-sm leading-6 text-[var(--muted)]">
+                  {experiment.description}
+                </p>
+              </a>
+            ))}
           </div>
         </div>
       </section>
