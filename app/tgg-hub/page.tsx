@@ -17,7 +17,7 @@ const projects = [
     name: "ClutchTopUp",
     type: "Gaming / Commerce",
     description:
-      "A gaming top-up system currently being rebuilt.",
+      "A gaming top-up service I'm rebuilding from the ground up.",
     href: null
   },
   {
