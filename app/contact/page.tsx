@@ -141,7 +141,7 @@ export default function ContactPage() {
               </p>
 
               <a
-                href="https://contra.com/jayjaytgg"
+                href="https://contra.com/jayjaytgg_tiuk6n8t?referralExperimentNid=DEFAULT_REFERRAL_PROGRAM&referrerUsername=jayjaytgg_tiuk6n8t"
                 target="_blank"
                 rel="noreferrer"
                 className="shrink-0 text-sm font-medium text-[var(--foreground)] transition-colors hover:text-[var(--accent)]"
