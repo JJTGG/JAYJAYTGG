@@ -24,7 +24,7 @@ const projects = [
     name: "ClutchTopUp",
     type: "Gaming / Commerce",
     description:
-      "A gaming top-up service I&apos;m rebuilding from the ground up. The first version lived on Wapka; the current version is being rebuilt as a proper standalone system.",
+      "A gaming top-up service I'm rebuilding from the ground up. The first version lived on Wapka; the current version is being rebuilt as a proper standalone system.",
     status: "Rebuilding",
     source: "https://github.com/JJTGG/clutchtopup"
   }
