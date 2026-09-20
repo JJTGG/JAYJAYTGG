@@ -7,7 +7,7 @@ const projects = [
       "I was already using multiple AI models at the same time. The idea of putting them together in one workspace came to me, so I started building it.",
     status: "Ongoing",
     live: "https://ai-arena-red.vercel.app/",
-    github: "https://github.com/JJTGG/ai-arena"
+    source: "https://github.com/JJTGG/ai-arena"
   },
   {
     number: "02",
@@ -17,15 +17,16 @@ const projects = [
       "I wanted to build something around trading that was actually useful to me. I started with the decision-making side — risk, position sizing, market data, and journaling — and gradually turned those pieces into a system.",
     status: "Ongoing",
     live: "https://trading-tools-xi.vercel.app/",
-    github: "https://github.com/JJTGG/trading-tools"
+    source: "https://github.com/JJTGG/trading-tools"
   },
   {
     number: "03",
     name: "ClutchTopUp",
     type: "Gaming / Commerce",
     description:
-      "The idea was to build a gaming top-up service. The first version lived on Wapka and gave the idea a real-world form. I eventually shut that version down and started rethinking the system from the ground up.",
-    status: "Currently rebuilding"
+      "A gaming top-up service I&apos;m rebuilding from the ground up. The first version lived on Wapka; the current version is being rebuilt as a proper standalone system.",
+    status: "Rebuilding",
+    source: "https://github.com/JJTGG/clutchtopup"
   }
 ];
 
@@ -90,16 +91,14 @@ export default function WorkPage() {
                         </a>
                       )}
 
-                      {project.github && (
-                        <a
-                          href={project.github}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="text-[var(--muted)] transition-colors hover:text-[var(--foreground)]"
-                        >
-                          GitHub ↗
-                        </a>
-                      )}
+                      <a
+                        href={project.source}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-[var(--muted)] transition-colors hover:text-[var(--foreground)]"
+                      >
+                        Source ↗
+                      </a>
                     </div>
                   </div>
                 </div>
