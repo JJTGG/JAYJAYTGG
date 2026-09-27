@@ -1,34 +1,12 @@
-const currentWork = [
-  {
-    name: "AI Arena",
-    description:
-      "A workspace for running and comparing different AI models.",
-    href: "https://ai-arena-red.vercel.app/",
-    github: "https://github.com/JJTGG/ai-arena"
-  },
-  {
-    name: "Trading Tools",
-    description:
-      "Tools for trading decisions, risk, market data, and analysis.",
-    href: "https://trading-tools-xi.vercel.app/",
-    github: "https://github.com/JJTGG/trading-tools"
-  }
-];
+import { projects } from "../lib/projects";
 
-const experiments = [
-  {
-    name: "AUREN",
-    description:
-      "A minimal storefront experiment exploring how a small product can become a polished web experience.",
-    href: "https://auren-store-delta.vercel.app/"
-  },
-  {
-    name: "Fake OS",
-    description:
-      "A browser-based experiment built around the idea of a fake operating system.",
-    href: "https://jjtgg.github.io/fake-os/"
-  }
-];
+const currentWork = projects.filter(
+  (project) => project.category === "work" && project.name !== "ClutchTopUp"
+);
+
+const experiments = projects.filter(
+  (project) => project.category === "experiment"
+);
 
 export default function Home() {
   return (
@@ -78,7 +56,7 @@ export default function Home() {
                   <h3 className="text-lg font-semibold">{project.name}</h3>
 
                   <a
-                    href={project.href}
+                    href={project.live}
                     target="_blank"
                     rel="noreferrer"
                     className="text-sm text-[var(--muted)] transition-colors hover:text-[var(--foreground)]"
@@ -88,11 +66,11 @@ export default function Home() {
                 </div>
 
                 <p className="mt-4 text-sm leading-6 text-[var(--muted)]">
-                  {project.description}
+                  {project.shortDescription}
                 </p>
 
                 <a
-                  href={project.github}
+                  href={project.source}
                   target="_blank"
                   rel="noreferrer"
                   className="mt-6 inline-block text-xs text-[var(--muted)] transition-colors hover:text-[var(--foreground)]"
@@ -167,7 +145,7 @@ export default function Home() {
             {experiments.map((experiment) => (
               <a
                 key={experiment.name}
-                href={experiment.href}
+                href={experiment.live}
                 target="_blank"
                 rel="noreferrer"
                 className="group bg-[var(--background)] p-6 transition-colors hover:bg-[#0b0f15] sm:p-7"
@@ -181,7 +159,7 @@ export default function Home() {
                 </div>
 
                 <p className="mt-4 text-sm leading-6 text-[var(--muted)]">
-                  {experiment.description}
+                  {experiment.shortDescription}
                 </p>
               </a>
             ))}
