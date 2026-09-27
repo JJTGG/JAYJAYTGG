@@ -1,34 +1,8 @@
-const projects = [
-  {
-    number: "01",
-    name: "AI Arena",
-    type: "AI / Product",
-    description:
-      "I was already using multiple AI models at the same time. The idea of putting them together in one workspace came to me, so I started building it.",
-    status: "Ongoing",
-    live: "https://ai-arena-red.vercel.app/",
-    source: "https://github.com/JJTGG/ai-arena"
-  },
-  {
-    number: "02",
-    name: "Trading Tools",
-    type: "Trading / Product",
-    description:
-      "I wanted to build something around trading that was actually useful to me. I started with the decision-making side — risk, position sizing, market data, and journaling — and gradually turned those pieces into a system.",
-    status: "Ongoing",
-    live: "https://trading-tools-xi.vercel.app/",
-    source: "https://github.com/JJTGG/trading-tools"
-  },
-  {
-    number: "03",
-    name: "ClutchTopUp",
-    type: "Gaming / Commerce",
-    description:
-      "A gaming top-up service I'm rebuilding from the ground up. The first version lived on Wapka; the current version is being rebuilt as a proper standalone system.",
-    status: "Rebuilding",
-    source: "https://github.com/JJTGG/clutchtopup"
-  }
-];
+import { projects } from "../../lib/projects";
+
+const workProjects = projects.filter(
+  (project) => project.category === "work"
+);
 
 export default function WorkPage() {
   return (
@@ -51,11 +25,11 @@ export default function WorkPage() {
 
         <div className="mt-20">
           <div className="divide-y border-y border-[var(--line)]">
-            {projects.map((project) => (
+            {workProjects.map((project, index) => (
               <article key={project.name} className="py-10 sm:py-14">
                 <div className="grid gap-8 md:grid-cols-[80px_1fr]">
                   <p className="text-sm font-medium text-[var(--muted)]">
-                    {project.number}
+                    {String(index + 1).padStart(2, "0")}
                   </p>
 
                   <div>
