@@ -1,25 +1,8 @@
-const experiments = [
-  {
-    number: "01",
-    name: "AUREN",
-    type: "Storefront / Concept",
-    description:
-      "A premium storefront concept built to explore product presentation, ecommerce interaction, and how a product experience can feel when the interface itself is part of the idea.",
-    status: "Experiment",
-    live: "https://auren-store-delta.vercel.app/",
-    github: "https://github.com/JJTGG/auren-store"
-  },
-  {
-    number: "02",
-    name: "Fake OS",
-    type: "Browser / Technical",
-    description:
-      "A browser experiment built around the idea of a tiny operating-system-like environment using only vanilla HTML, CSS, and JavaScript.",
-    status: "Experiment",
-    live: "https://jjtgg.github.io/fake-os/",
-    github: "https://github.com/JJTGG/fake-os"
-  }
-];
+import { projects } from "../../lib/projects";
+
+const experiments = projects.filter(
+  (project) => project.category === "experiment"
+);
 
 export default function ExperimentsPage() {
   return (
@@ -41,11 +24,11 @@ export default function ExperimentsPage() {
         </div>
 
         <div className="mt-20 divide-y border-y border-[var(--line)]">
-          {experiments.map((experiment) => (
+          {experiments.map((experiment, index) => (
             <article key={experiment.name} className="py-10 sm:py-14">
               <div className="grid gap-8 md:grid-cols-[80px_1fr]">
                 <p className="text-sm font-medium text-[var(--muted)]">
-                  {experiment.number}
+                  {String(index + 1).padStart(2, "0")}
                 </p>
 
                 <div>
@@ -70,17 +53,19 @@ export default function ExperimentsPage() {
                   </p>
 
                   <div className="mt-7 flex flex-wrap gap-5 text-sm">
-                    <a
-                      href={experiment.live}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="transition-colors hover:text-[var(--accent)]"
-                    >
-                      Live ↗
-                    </a>
+                    {experiment.live && (
+                      <a
+                        href={experiment.live}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="transition-colors hover:text-[var(--accent)]"
+                      >
+                        Live ↗
+                      </a>
+                    )}
 
                     <a
-                      href={experiment.github}
+                      href={experiment.source}
                       target="_blank"
                       rel="noreferrer"
                       className="text-[var(--muted)] transition-colors hover:text-[var(--foreground)]"
