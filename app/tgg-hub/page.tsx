@@ -1,33 +1,6 @@
-const projects = [
-  {
-    name: "AI Arena",
-    type: "AI / Product",
-    description:
-      "A workspace for running and comparing different AI models.",
-    href: "https://ai-arena-red.vercel.app/"
-  },
-  {
-    name: "Trading Tools",
-    type: "Trading / Product",
-    description:
-      "Tools for trading decisions, risk, market data, and analysis.",
-    href: "https://trading-tools-xi.vercel.app/"
-  },
-  {
-    name: "ClutchTopUp",
-    type: "Gaming / Commerce",
-    description:
-      "A gaming top-up service I'm rebuilding from the ground up.",
-    href: null
-  },
-  {
-    name: "AUREN",
-    type: "Storefront / Experiment",
-    description:
-      "A storefront experiment exploring product presentation and ecommerce experiences.",
-    href: "https://auren-store-delta.vercel.app/"
-  }
-];
+import { projects } from "../../lib/projects";
+
+const hubProjects = projects.filter((project) => project.featuredInHub);
 
 export default function TGGHubPage() {
   return (
@@ -55,7 +28,7 @@ export default function TGGHubPage() {
           </p>
 
           <div className="mt-8 divide-y border-y border-[var(--line)]">
-            {projects.map((project, index) => {
+            {hubProjects.map((project, index) => {
               const content = (
                 <>
                   <div className="flex items-start gap-6">
@@ -75,11 +48,11 @@ export default function TGGHubPage() {
                       </div>
 
                       <p className="mt-3 max-w-2xl text-sm leading-7 text-[var(--muted)]">
-                        {project.description}
+                        {project.shortDescription}
                       </p>
                     </div>
 
-                    {project.href && (
+                    {project.live && (
                       <span className="text-[var(--muted)] transition-transform group-hover:translate-x-1">
                         ↗
                       </span>
@@ -88,10 +61,10 @@ export default function TGGHubPage() {
                 </>
               );
 
-              return project.href ? (
+              return project.live ? (
                 <a
                   key={project.name}
-                  href={project.href}
+                  href={project.live}
                   target="_blank"
                   rel="noreferrer"
                   className="group block py-7 transition-colors hover:bg-[#0b0f15] sm:py-8"
