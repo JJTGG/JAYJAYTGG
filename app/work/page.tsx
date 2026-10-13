@@ -1,103 +1,225 @@
-import { projects } from "../../lib/projects";
+
+import { projects, type Project } from "../../lib/projects";
 
 const workProjects = projects.filter(
-  (project) => project.category === "work"
+  (project) =>
+    project.portfolioSection === "featured" ||
+    project.portfolioSection === "systems"
 );
 
-export default function WorkPage() {
+function ProjectLinks({ project }: { project: Project }) {
   return (
-    <main className="min-h-screen">
-      <section className="mx-auto max-w-6xl px-5 py-24">
-        <div className="max-w-3xl">
-          <p className="text-sm font-medium uppercase tracking-[0.2em] text-[var(--accent)]">
-            Work
+    <div className="mt-7 flex flex-wrap items-center gap-x-5 gap-y-3 text-sm">
+      {project.live && (
+        <a
+          href={project.live}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="font-medium transition-colors hover:text-[var(--accent)]"
+        >
+          View project ↗
+        </a>
+      )}
+
+      {project.source && (
+        <a
+          href={project.source}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-[var(--muted)] transition-colors hover:text-[var(--foreground)]"
+        >
+          Source code ↗
+        </a>
+      )}
+    </div>
+  );
+}
+
+function StatusLabel({ status }: { status: string }) {
+  return (
+    <span className="inline-flex w-fit items-center rounded-full border border-[var(--line)] px-3 py-1 text-xs text-[var(--muted)]">
+      {status}
+    </span>
+  );
+}
+
+export default function WorkPage() {
+  const featured = workProjects.filter(
+    (project) => project.portfolioSection === "featured"
+  );
+
+  const systems = workProjects.filter(
+    (project) => project.portfolioSection === "systems"
+  );
+
+  return (
+    <main>
+      <section className="border-b border-[var(--line)]">
+        <div className="mx-auto w-full max-w-[1240px] px-[var(--page-gutter)] py-20 sm:py-28 md:py-36">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--accent)]">
+            Projects / Selected work
           </p>
 
-          <h1 className="mt-3 text-5xl font-semibold tracking-[-0.04em] sm:text-7xl">
+          <h1 className="mt-6 max-w-5xl text-[clamp(3rem,8vw,7rem)] font-semibold leading-[0.96] tracking-[-0.065em]">
             Things I&apos;ve actually built.
           </h1>
 
-          <p className="mt-7 max-w-2xl text-lg leading-8 text-[var(--muted)]">
-            Some started as ideas I couldn&apos;t leave alone. Building them
-            was how I found out what they could become.
+          <p className="mt-7 max-w-2xl text-base leading-8 text-[var(--muted)] sm:text-lg sm:leading-9">
+            Products, tools, and systems at different stages of development.
+            Some are publicly available; others are still taking shape.
+            Their status matters as much as the idea behind them.
           </p>
-        </div>
 
-        <div className="mt-20">
-          <div className="divide-y border-y border-[var(--line)]">
-            {workProjects.map((project, index) => (
-              <article key={project.name} className="py-10 sm:py-14">
-                <div className="grid gap-8 md:grid-cols-[80px_1fr]">
-                  <p className="text-sm font-medium text-[var(--muted)]">
+          <div className="mt-9 flex flex-wrap gap-3 text-xs text-[var(--muted)]">
+            <span className="rounded-full border border-[var(--line)] px-3 py-2">
+              {featured.length} featured products
+            </span>
+            <span className="rounded-full border border-[var(--line)] px-3 py-2">
+              {systems.length} developing systems
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div className="mx-auto w-full max-w-[1240px] px-[var(--page-gutter)] py-20 sm:py-28">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--accent)]">
+              01 / Featured products
+            </p>
+
+            <h2 className="mt-4 text-3xl font-semibold tracking-[-0.045em] sm:text-4xl">
+              The work at the centre.
+            </h2>
+          </div>
+
+          <div className="mt-10 divide-y divide-[var(--line)] border-y border-[var(--line)]">
+            {featured.map((project, index) => (
+              <article key={project.slug} className="py-8 sm:py-11">
+                <div className="grid gap-5 sm:grid-cols-[64px_minmax(0,1fr)] sm:gap-8">
+                  <span className="font-mono text-xs text-[var(--accent)]">
                     {String(index + 1).padStart(2, "0")}
-                  </p>
+                  </span>
 
                   <div>
-                    <div className="flex flex-col gap-3 sm:flex-row sm:items-baseline sm:justify-between">
+                    <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                       <div>
-                        <p className="text-xs font-medium uppercase tracking-[0.15em] text-[var(--muted)]">
+                        <p className="text-xs uppercase tracking-[0.14em] text-[var(--muted)]">
                           {project.type}
                         </p>
 
-                        <h2 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">
+                        <h3 className="mt-3 text-3xl font-semibold tracking-[-0.045em] sm:text-4xl">
                           {project.name}
-                        </h2>
+                        </h3>
                       </div>
 
-                      <p className="text-sm text-[var(--muted)]">
-                        {project.status}
-                      </p>
+                      <StatusLabel status={project.status} />
                     </div>
 
-                    <p className="mt-6 max-w-3xl text-base leading-8 text-[var(--muted)]">
+                    <p className="mt-5 max-w-3xl text-base leading-8 text-[var(--muted)]">
                       {project.description}
                     </p>
 
-                    <div className="mt-7 flex flex-wrap gap-5 text-sm">
-                      {project.live && (
-                        <a
-                          href={project.live}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="transition-colors hover:text-[var(--accent)]"
-                        >
-                          Live ↗
-                        </a>
-                      )}
+                    {project.credit && (
+                      <p className="mt-4 text-xs text-[var(--muted)]">
+                        {project.credit}
+                      </p>
+                    )}
 
-                      <a
-                        href={project.source}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-[var(--muted)] transition-colors hover:text-[var(--foreground)]"
-                      >
-                        Source ↗
-                      </a>
-                    </div>
+                    <ProjectLinks project={project} />
                   </div>
                 </div>
               </article>
             ))}
           </div>
         </div>
+      </section>
 
-        <div className="mt-24 border-t border-[var(--line)] pt-16">
-          <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+      <section className="border-t border-[var(--line)]">
+        <div className="mx-auto w-full max-w-[1240px] px-[var(--page-gutter)] py-20 sm:py-28">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--accent)]">
+            02 / Developing systems
+          </p>
+
+          <h2 className="mt-4 max-w-3xl text-3xl font-semibold tracking-[-0.045em] sm:text-4xl">
+            Work still taking shape.
+          </h2>
+
+          <p className="mt-5 max-w-2xl text-base leading-8 text-[var(--muted)]">
+            Early-stage projects belong in the catalogue too, provided their
+            current stage is clear and their descriptions stay grounded in
+            what actually exists.
+          </p>
+
+          <div className="mt-10 divide-y divide-[var(--line)] border-y border-[var(--line)]">
+            {systems.map((project, index) => (
+              <article key={project.slug} className="py-8 sm:py-10">
+                <div className="grid gap-5 sm:grid-cols-[64px_minmax(0,1fr)] sm:gap-8">
+                  <span className="font-mono text-xs text-[var(--accent)]">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+
+                  <div>
+                    <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                      <div>
+                        <p className="text-xs uppercase tracking-[0.14em] text-[var(--muted)]">
+                          {project.type}
+                        </p>
+
+                        <h3 className="mt-3 text-2xl font-semibold tracking-[-0.04em] sm:text-3xl">
+                          {project.name}
+                        </h3>
+                      </div>
+
+                      <StatusLabel status={project.status} />
+                    </div>
+
+                    <p className="mt-4 max-w-3xl text-sm leading-7 text-[var(--muted)] sm:text-base sm:leading-8">
+                      {project.description}
+                    </p>
+
+                    <ProjectLinks project={project} />
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <div className="mt-12 flex flex-col gap-5 border-t border-[var(--line)] pt-8 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <p className="text-sm font-medium uppercase tracking-[0.2em] text-[var(--accent)]">
-                Experiments
-              </p>
+              <h3 className="text-xl font-semibold tracking-tight">
+                Experiments have their own space.
+              </h3>
 
-              <p className="mt-3 text-lg text-[var(--muted)]">
-                Not everything I build needs to become a product.
+              <p className="mt-2 text-sm leading-7 text-[var(--muted)]">
+                Smaller explorations, technical experiments, and ideas that
+                don&apos;t need to become full products.
               </p>
             </div>
 
             <a
               href="/experiments"
-              className="shrink-0 text-sm text-[var(--muted)] transition-colors hover:text-[var(--foreground)]"
+              className="inline-flex shrink-0 items-center gap-2 text-sm font-medium transition-colors hover:text-[var(--accent)]"
             >
-              Explore the experiments →
+              Explore experiments ↗
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-t border-[var(--line)]">
+        <div className="mx-auto w-full max-w-[1240px] px-[var(--page-gutter)] py-16">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <p className="max-w-xl text-sm leading-7 text-[var(--muted)]">
+              TGG HUB is the wider ecosystem I&apos;m currently building,
+              not another product card in this catalogue.
+            </p>
+
+            <a
+              href="/tgg-hub"
+              className="inline-flex shrink-0 items-center gap-2 text-sm font-medium transition-colors hover:text-[var(--accent)]"
+            >
+              About the ecosystem ↗
             </a>
           </div>
         </div>
