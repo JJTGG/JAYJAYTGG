@@ -10,13 +10,8 @@ export type Project = {
   status: string;
   live?: string;
   source?: string;
-
-  // Compatibility field while existing pages are migrated.
   category: "work" | "experiment" | "system";
-
-  // Canonical grouping for the redesigned portfolio.
   portfolioSection: PortfolioSection;
-
   featuredInHub: boolean;
   credit?: string;
 };
@@ -31,6 +26,7 @@ export const projects: Project[] = [
     shortDescription:
       "A social platform built around people, content, discovery, and communication.",
     status: "Launched · Refinement",
+    live: "https://agore.vercel.app/",
     source: "https://github.com/JJTGG/Agore",
     category: "system",
     portfolioSection: "featured",
