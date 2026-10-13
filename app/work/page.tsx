@@ -1,5 +1,25 @@
 
+import type { Metadata } from "next";
 import { projects, type Project } from "../../lib/projects";
+
+const pageTitle = "Projects & Systems";
+
+const pageDescription =
+  "Explore selected products, developing systems, and projects built by JAYJAYTGG, with clear development statuses and links to live work and source code.";
+
+export const metadata: Metadata = {
+  title: pageTitle,
+  description: pageDescription,
+  openGraph: {
+    title: `${pageTitle} — JAYJAYTGG`,
+    description: pageDescription,
+    url: "https://jayjaytgg.vercel.app/work"
+  },
+  twitter: {
+    title: `${pageTitle} — JAYJAYTGG`,
+    description: pageDescription
+  }
+};
 
 const workProjects = projects.filter(
   (project) =>
