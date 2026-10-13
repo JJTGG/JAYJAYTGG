@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -40,155 +41,218 @@ const elsewhereLinks = [
     label: "GitHub",
     href: "https://github.com/JJTGG",
     description:
-      "See the code, projects, and experiments behind the work."
+      "Explore the code, projects, and experiments behind the work."
   }
 ];
 
+type CopyStatus = {
+  label: string;
+  state: "copied" | "failed";
+} | null;
+
 export default function ContactPage() {
-  const [copied, setCopied] = useState<string | null>(null);
+  const [copyStatus, setCopyStatus] = useState<CopyStatus>(null);
 
   async function copyDetail(label: string, detail: string) {
     try {
       await navigator.clipboard.writeText(detail);
-      setCopied(label);
-
-      window.setTimeout(() => {
-        setCopied(null);
-      }, 1600);
+      setCopyStatus({ label, state: "copied" });
     } catch {
-      setCopied(null);
+      setCopyStatus({ label, state: "failed" });
     }
+
+    window.setTimeout(() => {
+      setCopyStatus(null);
+    }, 2000);
   }
 
   return (
-    <main className="min-h-screen">
-      <section className="mx-auto max-w-6xl px-5 py-24">
-        <div className="max-w-3xl">
-          <p className="text-sm font-medium uppercase tracking-[0.2em] text-[var(--accent)]">
-            Contact
+    <main>
+      <section className="border-b border-[var(--line)]">
+        <div className="mx-auto w-full max-w-[1240px] px-[var(--page-gutter)] py-20 sm:py-28 md:py-36">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--accent)]">
+            Contact / Get in touch
           </p>
 
-          <h1 className="mt-3 max-w-3xl text-5xl font-semibold tracking-[-0.04em] sm:text-7xl">
+          <h1 className="mt-6 max-w-5xl text-[clamp(3rem,8vw,7rem)] font-semibold leading-[0.96] tracking-[-0.065em]">
             Have something worth building or exploring?
           </h1>
 
-          <p className="mt-7 max-w-2xl text-lg leading-8 text-[var(--muted)]">
-            If you want to talk about something I&apos;m building, a project,
-            an idea, or something worth figuring out, reach out.
+          <p className="mt-7 max-w-2xl text-base leading-8 text-[var(--muted)] sm:text-lg sm:leading-9">
+            Reach out about a project, an idea, something I&apos;m building,
+            or a problem worth figuring out. Use whichever channel works
+            best for you.
           </p>
         </div>
+      </section>
 
-        <div className="mt-20 max-w-3xl">
-          <p className="mb-5 text-xs font-medium uppercase tracking-[0.15em] text-[var(--muted)]">
-            Direct
-          </p>
+      <section>
+        <div className="mx-auto w-full max-w-[1240px] px-[var(--page-gutter)] py-16 sm:py-24">
+          <div className="max-w-3xl">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--accent)]">
+              01 / Direct contact
+            </p>
 
-          <div className="border border-[var(--line)]">
-            {directLinks.map((link, index) => (
-              <div
-                key={link.href}
-                className={`group ${
-                  index !== directLinks.length - 1
-                    ? "border-b border-[var(--line)]"
-                    : ""
-                }`}
-              >
-                <a
-                  href={link.href}
-                  target={link.href.startsWith("http") ? "_blank" : undefined}
-                  rel={link.href.startsWith("http") ? "noreferrer" : undefined}
-                  className="block p-6 transition-colors hover:bg-[#0b0f15]"
-                >
-                  <div className="flex items-start justify-between gap-6">
+            <h2 className="mt-4 text-2xl font-semibold tracking-[-0.04em] sm:text-3xl">
+              Start a conversation.
+            </h2>
+
+            <div className="mt-8 divide-y divide-[var(--line)] border-y border-[var(--line)]">
+              {directLinks.map((link, index) => (
+                <article key={link.href} className="py-6 sm:py-8">
+                  <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
                     <div className="min-w-0">
-                      <p className="font-medium">{link.label}</p>
+                      <div className="flex flex-wrap items-center gap-3">
+                        <span className="font-mono text-xs text-[var(--accent)]">
+                          {String(index + 1).padStart(2, "0")}
+                        </span>
 
-                      <p className="mt-2 max-w-xl text-sm leading-6 text-[var(--muted)]">
+                        <h3 className="text-lg font-semibold">
+                          {link.label}
+                        </h3>
+                      </div>
+
+                      <a
+                        href={link.href}
+                        target={
+                          link.href.startsWith("http")
+                            ? "_blank"
+                            : undefined
+                        }
+                        rel={
+                          link.href.startsWith("http")
+                            ? "noopener noreferrer"
+                            : undefined
+                        }
+                        className="mt-3 inline-flex max-w-full break-all text-sm font-medium transition-colors hover:text-[var(--accent)] sm:text-base"
+                      >
+                        {link.detail}
+                        <span className="ml-2 shrink-0" aria-hidden="true">
+                          ↗
+                        </span>
+                      </a>
+
+                      <p className="mt-3 max-w-xl text-sm leading-7 text-[var(--muted)]">
                         {link.description}
                       </p>
                     </div>
 
-                    <span className="shrink-0 text-[var(--muted)] transition-transform group-hover:translate-x-1">
-                      ↗
-                    </span>
+                    <button
+                      type="button"
+                      onClick={() => copyDetail(link.label, link.detail)}
+                      aria-live="polite"
+                      className="inline-flex w-fit shrink-0 items-center gap-2 border border-[var(--line)] px-4 py-2.5 text-xs font-medium transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)]"
+                    >
+                      {copyStatus?.label === link.label &&
+                      copyStatus.state === "copied" ? (
+                        <>
+                          <span aria-hidden="true">✓</span>
+                          Copied
+                        </>
+                      ) : copyStatus?.label === link.label &&
+                        copyStatus.state === "failed" ? (
+                        "Copy unavailable"
+                      ) : (
+                        <>
+                          <span aria-hidden="true">↗</span>
+                          {link.copyLabel}
+                        </>
+                      )}
+                    </button>
                   </div>
-                </a>
+                </article>
+              ))}
+            </div>
 
-                <div className="px-6 pb-6">
-                  <button
-                    type="button"
-                    onClick={() => copyDetail(link.label, link.detail)}
-                    className="text-xs font-medium text-[var(--muted)] transition-colors hover:text-[var(--foreground)]"
-                  >
-                    {copied === link.label ? "Copied" : link.copyLabel}
-                  </button>
-                </div>
-              </div>
-            ))}
+            <p className="mt-4 text-xs leading-6 text-[var(--muted)]">
+              If copying is unavailable in your browser, select the
+              displayed contact detail and copy it manually.
+            </p>
           </div>
         </div>
+      </section>
 
-        <div className="mt-16 max-w-3xl">
-          <p className="mb-5 text-xs font-medium uppercase tracking-[0.15em] text-[var(--muted)]">
-            Hire me
-          </p>
-
-          <div className="border border-[var(--line)] p-6">
-            <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
-              <p className="max-w-xl text-sm leading-6 text-[var(--muted)]">
-                Not every idea needs a pitch deck. Sometimes it just needs to
-                be built.
+      <section className="border-t border-[var(--line)]">
+        <div className="mx-auto w-full max-w-[1240px] px-[var(--page-gutter)] py-16 sm:py-20">
+          <div className="grid gap-6 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center sm:gap-12">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--accent)]">
+                02 / Work together
               </p>
 
-              <a
-                href="https://contra.com/jayjaytgg_tiuk6n8t?referralExperimentNid=DEFAULT_REFERRAL_PROGRAM&referrerUsername=jayjaytgg_tiuk6n8t"
-                target="_blank"
-                rel="noreferrer"
-                className="shrink-0 text-sm font-medium text-[var(--foreground)] transition-colors hover:text-[var(--accent)]"
-              >
-                Find me on Contra ↗
-              </a>
+              <h2 className="mt-4 text-2xl font-semibold tracking-[-0.04em] sm:text-3xl">
+                Looking to hire me?
+              </h2>
+
+              <p className="mt-3 max-w-xl text-sm leading-7 text-[var(--muted)] sm:text-base">
+                Explore my Contra profile for professional opportunities
+                and project enquiries.
+              </p>
+            </div>
+
+            <a
+              href="https://contra.com/jayjaytgg_tiuk6n8t?referralExperimentNid=DEFAULT_REFERRAL_PROGRAM&referrerUsername=jayjaytgg_tiuk6n8t"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex w-fit items-center gap-3 border border-[var(--line)] px-5 py-3 text-sm font-medium transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)]"
+            >
+              Find me on Contra
+              <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-t border-[var(--line)]">
+        <div className="mx-auto w-full max-w-[1240px] px-[var(--page-gutter)] py-16 sm:py-20">
+          <div className="max-w-3xl">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--accent)]">
+              03 / Elsewhere
+            </p>
+
+            <h2 className="mt-4 text-2xl font-semibold tracking-[-0.04em] sm:text-3xl">
+              Follow the work.
+            </h2>
+
+            <div className="mt-8 divide-y divide-[var(--line)] border-y border-[var(--line)]">
+              {elsewhereLinks.map((link, index) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex items-center justify-between gap-6 py-6 transition-colors sm:py-7"
+                >
+                  <div>
+                    <span className="font-mono text-xs text-[var(--accent)]">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+
+                    <h3 className="mt-2 font-semibold">{link.label}</h3>
+
+                    <p className="mt-2 max-w-xl text-sm leading-7 text-[var(--muted)]">
+                      {link.description}
+                    </p>
+                  </div>
+
+                  <span
+                    aria-hidden="true"
+                    className="shrink-0 text-[var(--muted)] transition-transform group-hover:translate-x-1 group-hover:text-[var(--accent)]"
+                  >
+                    ↗
+                  </span>
+                </a>
+              ))}
             </div>
           </div>
         </div>
+      </section>
 
-        <div className="mt-16 max-w-3xl">
-          <p className="mb-5 text-xs font-medium uppercase tracking-[0.15em] text-[var(--muted)]">
-            Elsewhere
-          </p>
-
-          <div className="border border-[var(--line)]">
-            {elsewhereLinks.map((link, index) => (
-              <a
-                key={link.href}
-                href={link.href}
-                target="_blank"
-                rel="noreferrer"
-                className={`group flex items-center justify-between gap-6 p-6 transition-colors hover:bg-[#0b0f15] ${
-                  index !== elsewhereLinks.length - 1
-                    ? "border-b border-[var(--line)]"
-                    : ""
-                }`}
-              >
-                <div>
-                  <p className="font-medium">{link.label}</p>
-
-                  <p className="mt-2 max-w-xl text-sm leading-6 text-[var(--muted)]">
-                    {link.description}
-                  </p>
-                </div>
-
-                <span className="shrink-0 text-[var(--muted)] transition-transform group-hover:translate-x-1">
-                  ↗
-                </span>
-              </a>
-            ))}
-          </div>
-        </div>
-
-        <div className="mt-16 max-w-2xl border-t border-[var(--line)] pt-6">
-          <p className="text-sm leading-6 text-[var(--muted)]">
-            Not sure where to start? Use whichever channel feels natural.
+      <section className="border-t border-[var(--line)]">
+        <div className="mx-auto w-full max-w-[1240px] px-[var(--page-gutter)] py-12 sm:py-16">
+          <p className="max-w-2xl text-sm leading-7 text-[var(--muted)] sm:text-base">
+            No complicated starting point needed. A clear message about
+            what you have in mind is enough to begin.
           </p>
         </div>
       </section>
