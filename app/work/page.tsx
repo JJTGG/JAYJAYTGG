@@ -1,5 +1,6 @@
 
 import type { Metadata } from "next";
+import Link from "next/link";
 import { projects, type Project } from "../../lib/projects";
 
 const pageTitle = "Projects & Systems";
@@ -30,6 +31,13 @@ const workProjects = projects.filter(
 function ProjectLinks({ project }: { project: Project }) {
   return (
     <div className="mt-7 flex flex-wrap items-center gap-x-5 gap-y-3 text-sm">
+      <Link
+        href={`/work/${project.slug}`}
+        className="font-medium text-[var(--accent)] transition-colors hover:underline"
+      >
+        Explore preview ↗
+      </Link>
+
       {project.live && (
         <a
           href={project.live}
@@ -217,12 +225,12 @@ export default function WorkPage() {
               </p>
             </div>
 
-            <a
+            <Link
               href="/experiments"
               className="inline-flex shrink-0 items-center gap-2 text-sm font-medium transition-colors hover:text-[var(--accent)]"
             >
               Explore experiments ↗
-            </a>
+            </Link>
           </div>
         </div>
       </section>
@@ -235,12 +243,12 @@ export default function WorkPage() {
               not another product card in this catalogue.
             </p>
 
-            <a
+            <Link
               href="/tgg-hub"
               className="inline-flex shrink-0 items-center gap-2 text-sm font-medium transition-colors hover:text-[var(--accent)]"
             >
               About the ecosystem ↗
-            </a>
+            </Link>
           </div>
         </div>
       </section>
