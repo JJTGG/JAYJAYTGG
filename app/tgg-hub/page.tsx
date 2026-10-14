@@ -1,4 +1,5 @@
 
+import Link from "next/link";
 import { projects, type Project } from "../../lib/projects";
 
 const hubProjects = projects.filter((project) => project.featuredInHub);
@@ -14,6 +15,13 @@ function StatusLabel({ status }: { status: string }) {
 function ProjectLinks({ project }: { project: Project }) {
   return (
     <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3 text-sm">
+      <Link
+        href={`/work/${project.slug}`}
+        className="font-medium text-[var(--accent)] transition-colors hover:underline"
+      >
+        Explore preview ↗
+      </Link>
+
       {project.live && (
         <a
           href={project.live}
@@ -195,19 +203,19 @@ export default function TGGHubPage() {
             </div>
 
             <div className="flex flex-wrap gap-x-6 gap-y-4 text-sm">
-              <a
+              <Link
                 href="/work"
                 className="font-medium transition-colors hover:text-[var(--accent)]"
               >
                 Projects and systems ↗
-              </a>
+              </Link>
 
-              <a
+              <Link
                 href="/experiments"
                 className="text-[var(--muted)] transition-colors hover:text-[var(--foreground)]"
               >
                 Experiments ↗
-              </a>
+              </Link>
             </div>
           </div>
         </div>
