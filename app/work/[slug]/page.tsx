@@ -1,9 +1,7 @@
-
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import ProjectPreview from "../../../components/ProjectPreview";
-import ProjectExperiences from "../../../components/ProjectExperiences";
+import ProjectShowcase from "../../../components/ProjectShowcase";
 import { projects } from "../../../lib/projects";
 
 type ProjectPageProps = {
@@ -67,9 +65,6 @@ export default async function ProjectDetailPage({
   if (!project) {
     notFound();
   }
-
-  const hasCustomExperience =
-    project.slug === "meayu" || project.slug === "clutchtopup";
 
   return (
     <main>
@@ -137,20 +132,7 @@ export default async function ProjectDetailPage({
 
       <section>
         <div className="mx-auto w-full max-w-[1240px] px-[var(--page-gutter)] py-12 sm:py-16">
-          {project.live ? (
-            <ProjectPreview
-              projectName={project.name}
-              liveUrl={project.live}
-              sourceUrl={project.source}
-            />
-          ) : hasCustomExperience ? (
-            <ProjectExperiences slug={project.slug} />
-          ) : (
-            <ProjectPreview
-              projectName={project.name}
-              sourceUrl={project.source}
-            />
-          )}
+          <ProjectShowcase project={project} />
         </div>
       </section>
 
