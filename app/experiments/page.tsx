@@ -1,6 +1,30 @@
-
+import type { Metadata } from "next";
 import Link from "next/link";
 import { projects, type Project } from "../../lib/projects";
+
+const pageTitle = "Experiments & Explorations";
+
+const pageDescription =
+  "Explore independent experiments, technical explorations, and unfinished builds by JAYJAYTGG, with project previews and source links.";
+
+export const metadata: Metadata = {
+  title: pageTitle,
+  description: pageDescription,
+  alternates: {
+    canonical: "https://jayjaytgg.vercel.app/experiments"
+  },
+  openGraph: {
+    title: `${pageTitle} — JAYJAYTGG`,
+    description: pageDescription,
+    url: "https://jayjaytgg.vercel.app/experiments",
+    type: "website"
+  },
+  twitter: {
+    card: "summary",
+    title: `${pageTitle} — JAYJAYTGG`,
+    description: pageDescription
+  }
+};
 
 const experiments = projects.filter(
   (project) => project.portfolioSection === "experiments"
