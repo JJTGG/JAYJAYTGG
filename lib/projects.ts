@@ -91,30 +91,48 @@ export const projects: Project[] = [
     featuredInHub: false
   },
   {
-    name: "NEXVARIN",
-    slug: "nexvarin",
-    type: "Infrastructure",
+    name: "Craftmish",
+    slug: "craftmish",
+    type: "Knowledge / Learning System",
     description:
-      "An early infrastructure initiative exploring how build and deployment workflows can be developed as a coherent platform. Its implementation is at an early stage, with the initial specification guiding the first build.",
+      "A knowledge system for builders that connects technologies, concepts, skills, learning resources, roadmaps, challenges, and projects in one place.",
     shortDescription:
-      "An infrastructure initiative exploring build and deployment systems.",
-    status: "Early development",
+      "A connected knowledge and learning system for people who build.",
+    status: "In development",
+    live: "https://craftmish.vercel.app/",
+    source: "https://github.com/JJTGG/craftmish",
     category: "system",
     portfolioSection: "systems",
     featuredInHub: false
   },
   {
-    name: "Prospect Scout",
-    slug: "prospect-scout",
-    type: "Research / Tooling",
+    name: "Testing Ground",
+    slug: "testing-ground",
+    type: "Research / Experimentation System",
     description:
-      "An early research tool focused on finding public evidence of potential web-development opportunities. The initial scope is deliberately narrow: discover evidence before attempting to build a larger workflow around it.",
+      "A reusable environment for testing external technologies under controlled conditions and preserving observations. The initial focus is on establishing the environment before adding individual experiments.",
     shortDescription:
-      "An early tool for finding public evidence of web-development opportunities.",
-    status: "MVP-0",
-    source: "https://github.com/JJTGG/prospect-scout",
+      "A controlled environment for testing technologies and preserving results.",
+    status: "Early development",
+    live: "https://testing-ground-gilt.vercel.app/",
+    source: "https://github.com/JJTGG/testing-ground",
     category: "system",
     portfolioSection: "systems",
+    featuredInHub: false
+  },
+  {
+    name: "CV Generator",
+    slug: "cv-generator",
+    type: "Utility / Experiment",
+    description:
+      "An early CV-generation utility. The project is unfinished, so it is presented as an experiment rather than a completed product.",
+    shortDescription:
+      "An unfinished utility for generating CVs.",
+    status: "Unfinished",
+    live: "https://cv-generator-dusky-ten.vercel.app/",
+    source: "https://github.com/JJTGG/cv-generator",
+    category: "experiment",
+    portfolioSection: "experiments",
     featuredInHub: false
   },
   {
