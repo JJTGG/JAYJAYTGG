@@ -4,7 +4,6 @@ import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import LivingBuilder from "../components/LivingBuilder";
 import "./globals.css";
 
 const themeInitScript = `
@@ -65,7 +64,6 @@ export default function RootLayout({
         <Header />
         {children}
         <Footer />
-        <LivingBuilder />
         <Analytics />
       </body>
     </html>
