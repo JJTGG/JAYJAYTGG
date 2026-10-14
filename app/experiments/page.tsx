@@ -1,4 +1,5 @@
 
+import Link from "next/link";
 import { projects, type Project } from "../../lib/projects";
 
 const experiments = projects.filter(
@@ -8,6 +9,13 @@ const experiments = projects.filter(
 function ExperimentLinks({ project }: { project: Project }) {
   return (
     <div className="mt-7 flex flex-wrap items-center gap-x-5 gap-y-3 text-sm">
+      <Link
+        href={`/work/${project.slug}`}
+        className="font-medium text-[var(--accent)] transition-colors hover:underline"
+      >
+        Explore preview ↗
+      </Link>
+
       {project.live && (
         <a
           href={project.live}
@@ -115,19 +123,19 @@ export default function ExperimentsPage() {
             </p>
 
             <div className="mt-8 flex flex-wrap gap-x-6 gap-y-4 text-sm">
-              <a
+              <Link
                 href="/work"
                 className="font-medium transition-colors hover:text-[var(--accent)]"
               >
                 Explore projects and systems ↗
-              </a>
+              </Link>
 
-              <a
+              <Link
                 href="/tgg-hub"
                 className="text-[var(--muted)] transition-colors hover:text-[var(--foreground)]"
               >
                 About TGG HUB ↗
-              </a>
+              </Link>
             </div>
           </div>
         </div>
