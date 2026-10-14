@@ -1,4 +1,5 @@
 
+import Link from "next/link";
 import { projects, type Project } from "../lib/projects";
 
 const featuredProjects = projects.filter(
@@ -14,10 +15,15 @@ const experiments = projects.filter(
 );
 
 function ProjectLinks({ project }: { project: Project }) {
-  if (!project.live && !project.source) return null;
-
   return (
     <div className="mt-7 flex flex-wrap items-center gap-x-5 gap-y-3 text-sm">
+      <Link
+        href={`/work/${project.slug}`}
+        className="inline-flex items-center gap-2 font-medium text-[var(--accent)] transition-colors hover:underline"
+      >
+        Explore preview <span aria-hidden="true">↗</span>
+      </Link>
+
       {project.live && (
         <a
           href={project.live}
