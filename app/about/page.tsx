@@ -1,26 +1,34 @@
+import Link from "next/link";
 
 export default function AboutPage() {
   return (
     <main>
+      {/* Introduction */}
       <section className="border-b border-[var(--line)]">
         <div className="mx-auto w-full max-w-[1240px] px-[var(--page-gutter)] py-20 sm:py-28 md:py-36">
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--accent)]">
-            About / Approach
+            About / How I work
           </p>
 
           <h1 className="mt-6 max-w-5xl text-[clamp(3rem,8vw,7rem)] font-semibold leading-[0.96] tracking-[-0.065em]">
-            What sits behind the work.
+            I build to find out what an idea can become.
           </h1>
 
           <p className="mt-7 max-w-2xl text-base leading-8 text-[var(--muted)] sm:text-lg sm:leading-9">
-            I build ideas into things that actually exist. The interesting
-            part is figuring out what an idea needs to become, how its pieces
-            should connect, and what happens when it has to work beyond the
-            original thought.
+            I'm an independent builder. I work on products, practical
+            tools, experiments, and systems that begin with an idea,
+            a question I want to answer, or a problem I want to understand.
+          </p>
+
+          <p className="mt-5 max-w-2xl text-base leading-8 text-[var(--muted)] sm:text-lg sm:leading-9">
+            I learn by making things, testing what I believe should work,
+            and improving them when reality disagrees with the plan.
+            The result matters, but so does understanding how it works.
           </p>
         </div>
       </section>
 
+      {/* What I build */}
       <section>
         <div className="mx-auto w-full max-w-[1240px] px-[var(--page-gutter)] py-20 sm:py-28">
           <div className="grid gap-8 md:grid-cols-[minmax(0,0.8fr)_minmax(0,1.4fr)] md:gap-16">
@@ -30,140 +38,146 @@ export default function AboutPage() {
               </p>
 
               <h2 className="mt-4 max-w-md text-3xl font-semibold tracking-[-0.045em] sm:text-4xl">
-                The idea determines the form.
+                Different ideas need different solutions.
               </h2>
             </div>
 
             <div className="space-y-6 text-base leading-8 text-[var(--muted)] sm:text-lg sm:leading-9">
               <p>
-                The ideas that hold my attention tend to grow beyond a single
-                page or feature. Depending on what they need, they become
-                products, tools, experiments, or systems.
+                Some ideas become products people can use. Others become
+                tools that solve a specific problem, experiments that test
+                an approach, or larger systems that connect several
+                moving parts.
               </p>
 
               <p>
-                I&apos;m interested in taking something that mostly exists as
-                a thought and working out what it looks like when the pieces
-                have to connect, assumptions get tested, and someone could
-                actually use the result.
+                I don't assume every idea needs to become a business,
+                and I don't treat every experiment as a finished product.
+                Sometimes a small working version is enough to reveal
+                whether an idea deserves more attention.
               </p>
 
               <p>
-                Not every idea needs to become a product. Sometimes building
-                it is simply the quickest way to find out what the idea
-                really is.
+                The projects on this site are at different stages.
+                I want the presentation to reflect that honestly:
+                what exists, what is still being built, and what remains
+                unfinished.
               </p>
             </div>
           </div>
 
-          <div className="mt-20 grid gap-8 border-t border-[var(--line)] pt-16 md:grid-cols-[minmax(0,0.8fr)_minmax(0,1.4fr)] md:gap-16 sm:mt-24 sm:pt-20">
+          {/* How I think */}
+          <div className="mt-20 grid gap-8 border-t border-[var(--line)] pt-16 sm:mt-24 sm:pt-20 md:grid-cols-[minmax(0,0.8fr)_minmax(0,1.4fr)] md:gap-16">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--accent)]">
                 02 / How I think
               </p>
 
               <h2 className="mt-4 max-w-md text-3xl font-semibold tracking-[-0.045em] sm:text-4xl">
-                Systems, not just surfaces.
+                Understand the system behind the screen.
               </h2>
             </div>
 
             <div className="space-y-6 text-base leading-8 text-[var(--muted)] sm:text-lg sm:leading-9">
               <p>
-                A project is rarely just a page or an interface to me.
-                I&apos;m thinking about how its parts connect, what the
-                underlying system should do, what happens when something
-                changes, and whether the whole thing holds together.
+                An interface is only one part of a product. I'm also
+                thinking about the data behind it, the steps a user
+                takes, how its components communicate, and what happens
+                when something goes wrong.
               </p>
 
               <p>
-                That means looking beyond the first visible result:
-                considering the workflow, the data, the failure cases, and
-                the experience of using the thing once the novelty wears off.
+                I want to understand how the pieces fit together.
+                A feature can look complete and still fail because
+                the underlying workflow is incomplete, an assumption
+                is wrong, or an important case was overlooked.
               </p>
 
               <p>
-                The implementation can change completely. Understanding the
-                problem and how its pieces fit together is what guides the
-                work.
+                That is why I care about the implementation as well
+                as the experience. Both have to make sense for the
+                whole thing to work.
               </p>
             </div>
           </div>
 
-          <div className="mt-20 grid gap-8 border-t border-[var(--line)] pt-16 md:grid-cols-[minmax(0,0.8fr)_minmax(0,1.4fr)] md:gap-16 sm:mt-24 sm:pt-20">
+          {/* How I work */}
+          <div className="mt-20 grid gap-8 border-t border-[var(--line)] pt-16 sm:mt-24 sm:pt-20 md:grid-cols-[minmax(0,0.8fr)_minmax(0,1.4fr)] md:gap-16">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--accent)]">
                 03 / How I work
               </p>
 
               <h2 className="mt-4 max-w-md text-3xl font-semibold tracking-[-0.045em] sm:text-4xl">
-                Start with what can be tested.
+                Test assumptions. Learn. Adjust.
               </h2>
             </div>
 
             <div className="space-y-6 text-base leading-8 text-[var(--muted)] sm:text-lg sm:leading-9">
               <p>
-                I work independently and prefer to build from questions I
-                actually want answered. I&apos;d rather take an idea that
-                keeps bothering me and work out what it could become than
-                simply execute someone else&apos;s specification from
-                beginning to end.
+                I work independently and prefer to understand a problem
+                before committing to a solution. I break ideas down,
+                identify what can be tested, and work from there.
               </p>
 
               <p>
-                Constraints are part of the process, not a reason to wait for
-                ideal conditions. If something can be tested with very
-                little, I&apos;d rather test it first, learn what matters,
-                and build from evidence.
+                I also build within real constraints. I can't always
+                start with the ideal resources, infrastructure, or
+                conditions, so I look for practical ways to make progress
+                without pretending those limitations don't exist.
               </p>
 
               <p>
-                That approach helps separate what the idea needs now from
-                what can wait. It also makes it easier to challenge an
-                assumption before it becomes a much larger problem.
+                When something fails, the next step is to find out why.
+                I would rather verify an assumption and correct the
+                approach than keep adding complexity to something
+                that doesn't work.
               </p>
             </div>
           </div>
 
-          <div className="mt-20 grid gap-8 border-t border-[var(--line)] pt-16 md:grid-cols-[minmax(0,0.8fr)_minmax(0,1.4fr)] md:gap-16 sm:mt-24 sm:pt-20">
+          {/* TGG HUB */}
+          <div className="mt-20 grid gap-8 border-t border-[var(--line)] pt-16 sm:mt-24 sm:pt-20 md:grid-cols-[minmax(0,0.8fr)_minmax(0,1.4fr)] md:gap-16">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--accent)]">
                 04 / The wider ecosystem
               </p>
 
               <h2 className="mt-4 max-w-md text-3xl font-semibold tracking-[-0.045em] sm:text-4xl">
-                An ecosystem I&apos;m currently building.
+                Connections without losing independence.
               </h2>
             </div>
 
             <div>
               <div className="space-y-6 text-base leading-8 text-[var(--muted)] sm:text-lg sm:leading-9">
                 <p>
-                  TGG HUB is an ecosystem I&apos;m currently building around
-                  a connected set of projects and ideas. It provides room
-                  for related work to grow together without requiring every
-                  independent project to belong to it.
+                  TGG HUB is an ecosystem I'm building around selected
+                  projects and the connections between them. It gives
+                  related work room to develop together without making
+                  every project part of the same product.
                 </p>
 
                 <p>
-                  Some projects stand on their own. Others become more
-                  useful when they connect to something else. I&apos;m
-                  working out those relationships through the systems
-                  themselves, rather than assuming every idea needs the
-                  same structure.
+                  Each project can keep its own identity, purpose, and
+                  direction. Where connections are useful, I can develop
+                  them deliberately instead of forcing everything into
+                  one structure.
                 </p>
               </div>
 
-              <a
+              <Link
                 href="/tgg-hub"
                 className="mt-8 inline-flex items-center gap-2 text-sm font-medium transition-colors hover:text-[var(--accent)]"
               >
-                Explore TGG HUB <span aria-hidden="true">↗</span>
-              </a>
+                Explore TGG HUB
+                <span aria-hidden="true">↗</span>
+              </Link>
             </div>
           </div>
         </div>
       </section>
 
+      {/* Continue exploring */}
       <section className="border-t border-[var(--line)]">
         <div className="mx-auto w-full max-w-[1240px] px-[var(--page-gutter)] py-16 sm:py-20">
           <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
@@ -173,29 +187,36 @@ export default function AboutPage() {
               </p>
 
               <h2 className="mt-4 max-w-2xl text-3xl font-semibold tracking-[-0.045em] sm:text-4xl">
-                The work is the evidence.
+                The projects show the approach in practice.
               </h2>
 
               <p className="mt-4 max-w-xl text-sm leading-7 text-[var(--muted)] sm:text-base">
-                Explore the projects, systems, and experiments at their
-                actual stages of development.
+                Explore the actual work, see where each project stands,
+                or get in touch about something worth discussing.
               </p>
             </div>
 
             <div className="flex flex-wrap gap-x-6 gap-y-4 text-sm">
-              <a
+              <Link
                 href="/work"
                 className="font-medium transition-colors hover:text-[var(--accent)]"
               >
-                Projects and systems ↗
-              </a>
+                Explore projects and systems ↗
+              </Link>
 
-              <a
+              <Link
                 href="/experiments"
                 className="text-[var(--muted)] transition-colors hover:text-[var(--foreground)]"
               >
-                Experiments ↗
-              </a>
+                Browse experiments ↗
+              </Link>
+
+              <Link
+                href="/contact"
+                className="text-[var(--muted)] transition-colors hover:text-[var(--foreground)]"
+              >
+                Get in touch ↗
+              </Link>
             </div>
           </div>
         </div>
