@@ -1,4 +1,3 @@
-
 import Link from "next/link";
 import { projects, type Project } from "../lib/projects";
 
@@ -110,7 +109,8 @@ export default function Home() {
                 ["01", "Products"],
                 ["02", "Practical tools"],
                 ["03", "Connected systems"],
-                ["04", "Experiments"]
+                ["04", "Experiments"],
+                ["05", "Collaborations"]
               ].map(([number, label]) => (
                 <div
                   key={number}
@@ -398,6 +398,111 @@ export default function Home() {
               </article>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Collaborations — work built for other people */}
+      <section className="border-b border-[var(--line)]">
+        <div className="mx-auto w-full max-w-[1240px] px-[var(--page-gutter)] py-20 sm:py-28">
+          <div className="grid gap-10 md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] md:items-end md:gap-16">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--accent)]">
+                Work built for others / 05
+              </p>
+
+              <h2 className="mt-4 text-4xl font-semibold leading-tight tracking-[-0.05em] sm:text-5xl">
+                Sometimes the story isn&apos;t mine to tell.
+              </h2>
+            </div>
+
+            <div>
+              <p className="text-base leading-8 text-[var(--muted)] sm:text-lg sm:leading-9">
+                I also build websites for other people. In these
+                collaborations, the ownership of the idea and story stays
+                clear, alongside my contribution to bringing the website
+                to life.
+              </p>
+
+              <Link
+                href="/collaborations"
+                className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-[var(--accent)] transition-colors hover:underline"
+              >
+                Explore collaborations <span aria-hidden="true">↗</span>
+              </Link>
+            </div>
+          </div>
+
+          <article className="mt-10 grid overflow-hidden rounded-xl border border-[var(--line)] md:grid-cols-[minmax(0,1.2fr)_minmax(240px,0.8fr)]">
+            <div className="flex flex-col p-6 sm:p-8 md:p-9">
+              <span className="font-mono text-xs text-[var(--accent)]">
+                01 / Website development
+              </span>
+
+              <h3 className="mt-7 text-3xl font-semibold tracking-[-0.045em] sm:text-4xl">
+                Beyond the Page
+              </h3>
+
+              <p className="mt-4 max-w-xl text-sm leading-7 text-[var(--muted)] sm:text-base sm:leading-8">
+                A digital scrapbook documenting Sofiyah Bakare&apos;s
+                journey through the World Literacy Foundation&apos;s Youth
+                Power in Action programme.
+              </p>
+
+              <p className="mt-5 text-sm text-[var(--muted)]">
+                Project owner and storyteller:{" "}
+                <a
+                  href="https://www.instagram.com/sofiyah_bakare"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-medium text-[var(--accent)] hover:underline"
+                >
+                  Sofiyah Bakare ↗
+                </a>
+              </p>
+
+              <div className="mt-auto flex flex-wrap items-center gap-x-5 gap-y-3 pt-8 text-sm">
+                <Link
+                  href="/collaborations/beyond-the-page"
+                  className="font-medium text-[var(--accent)] hover:underline"
+                >
+                  Read the case study ↗
+                </Link>
+
+                <a
+                  href="https://beyond-the-page-two.vercel.app"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-medium text-[var(--muted)] transition-colors hover:text-[var(--foreground)]"
+                >
+                  Visit website ↗
+                </a>
+              </div>
+            </div>
+
+            <div className="flex flex-col justify-between border-t border-[var(--line)] bg-[var(--surface)] p-6 sm:p-8 md:border-l md:border-t-0 md:p-9">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">
+                  The distinction
+                </p>
+
+                <h4 className="mt-4 text-2xl font-semibold leading-tight tracking-[-0.04em]">
+                  Her story. My implementation.
+                </h4>
+
+                <p className="mt-4 text-sm leading-7 text-[var(--muted)]">
+                  Sofiyah&apos;s experiences and reflections remain hers.
+                  My role was to build the website that presents her story.
+                </p>
+              </div>
+
+              <Link
+                href="/collaborations"
+                className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-[var(--accent)] hover:underline"
+              >
+                View the collaboration index <span aria-hidden="true">→</span>
+              </Link>
+            </div>
+          </article>
         </div>
       </section>
 
