@@ -355,19 +355,19 @@ export default function Home() {
           <div className="mt-10 divide-y divide-[var(--line)] border-y border-[var(--line)]">
             {developingSystems.map((project, index) => (
               <ScrollReveal key={project.slug} delayMs={index * 60}>
-                <article className="group grid gap-5 py-7 sm:grid-cols-[64px_minmax(0,1fr)] sm:py-9">
-                  <span className="font-mono text-xs text-[var(--accent)]">
+                <article className="group relative isolate grid gap-5 overflow-hidden py-7 transition-colors duration-300 hover:bg-[var(--surface)] focus-within:bg-[var(--surface)] sm:grid-cols-[64px_minmax(0,1fr)] sm:py-9 before:pointer-events-none before:absolute before:left-0 before:top-0 before:z-10 before:h-full before:w-[3px] before:origin-top before:scale-y-0 before:bg-[var(--accent)] before:transition-transform before:duration-500 before:ease-out before:content-[''] group-hover:before:scale-y-100 group-focus-within:before:scale-y-100">
+                  <span className="relative z-0 pl-3 font-mono text-xs text-[var(--accent)] transition-transform duration-300 ease-out group-hover:translate-x-1 group-focus-within:translate-x-1">
                     {String(index + 1).padStart(2, "0")}
                   </span>
 
-                  <div>
+                  <div className="relative z-0 pr-3">
                     <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                       <div>
                         <p className="text-xs uppercase tracking-[0.12em] text-[var(--muted)]">
                           {project.type}
                         </p>
 
-                        <h3 className="mt-2 text-2xl font-semibold tracking-[-0.04em] transition-colors group-hover:text-[var(--accent)]">
+                        <h3 className="mt-2 text-2xl font-semibold tracking-[-0.04em] transition-all duration-300 ease-out group-hover:translate-x-1 group-focus-within:translate-x-1 group-hover:text-[var(--accent)] group-focus-within:text-[var(--accent)]">
                           {project.name}
                         </h3>
                       </div>
