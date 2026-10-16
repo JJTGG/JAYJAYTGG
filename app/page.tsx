@@ -70,8 +70,9 @@ export default function Home() {
     <main className="overflow-hidden">
       {/* Hero */}
       <section className="border-b border-[var(--line)]">
-        <div className="mx-auto grid w-full max-w-[1240px] items-center gap-12 px-[var(--page-gutter)] py-16 sm:py-20 md:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] md:gap-10 md:py-24 lg:gap-16 lg:py-28">
-          <div>
+        <div className="relative mx-auto w-full max-w-[1240px] px-[var(--page-gutter)] py-16 sm:py-20 md:py-24 lg:py-28">
+          {/* The hero text alone determines the layout height */}
+          <div className="relative z-10 w-full max-w-3xl md:max-w-[60%]">
             <p className="mb-7 flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--accent)]">
               <span
                 aria-hidden="true"
@@ -117,9 +118,11 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Evolving idea — the hero's interactive centerpiece */}
-          <div className="min-w-0">
-            <IdeaEvolution />
+          {/* The animation floats over the hero and reserves no layout space */}
+          <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+            <div className="pointer-events-auto absolute bottom-5 right-0 w-[44%] opacity-20 sm:bottom-8 sm:w-[38%] sm:opacity-35 md:bottom-10 md:w-[min(36%,420px)] md:opacity-100 [&>section]:!rounded-none [&>section]:!border-0 [&>section]:!bg-transparent [&>section]:!p-0 [&>section>div:first-child]:!hidden [&>section>div:last-child]:!border-t-0 [&>section>div:last-child]:!pt-0">
+              <IdeaEvolution />
+            </div>
           </div>
         </div>
 
