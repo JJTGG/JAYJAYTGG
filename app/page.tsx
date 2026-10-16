@@ -191,7 +191,7 @@ export default function Home() {
                 className={index === 0 ? "md:col-span-2" : ""}
               >
                 <article
-                  className={`motion-lift group relative h-full overflow-hidden rounded-xl border border-[var(--line)] bg-[var(--background)] hover:border-[var(--accent)] ${
+                  className={`motion-lift group relative isolate h-full overflow-hidden rounded-xl border border-[var(--line)] bg-[var(--background)] hover:border-[var(--accent)] focus-within:border-[var(--accent)] before:pointer-events-none before:absolute before:left-0 before:top-0 before:z-20 before:h-[2px] before:w-full before:origin-left before:scale-x-0 before:bg-[var(--accent)] before:transition-transform before:duration-500 before:ease-out before:content-[''] group-hover:before:scale-x-100 group-focus-within:before:scale-x-100 ${
                     index === 0
                       ? "md:grid md:grid-cols-[minmax(0,1.3fr)_minmax(220px,0.7fr)]"
                       : ""
@@ -206,7 +206,7 @@ export default function Home() {
                       <StatusLabel status={project.status} />
                     </div>
 
-                    <h3 className="mt-8 text-3xl font-semibold tracking-[-0.05em] sm:text-4xl">
+                    <h3 className="mt-8 text-3xl font-semibold tracking-[-0.05em] transition-all duration-300 ease-out group-hover:translate-x-1 group-focus-within:translate-x-1 group-hover:text-[var(--accent)] group-focus-within:text-[var(--accent)] sm:text-4xl">
                       {project.name}
                     </h3>
 
@@ -255,7 +255,7 @@ export default function Home() {
                       </div>
 
                       <div className="relative">
-                        <span className="block text-[clamp(5rem,10vw,9rem)] font-semibold leading-none tracking-[-0.09em] text-[var(--accent)] transition-transform duration-500 ease-out group-hover:-translate-y-2">
+                        <span className="origin-bottom-left block text-[clamp(5rem,10vw,9rem)] font-semibold leading-none tracking-[-0.09em] text-[var(--accent)] transition-transform duration-500 ease-out group-hover:-translate-y-3 group-hover:scale-[1.04] group-focus-within:-translate-y-3 group-focus-within:scale-[1.04]">
                           A.
                         </span>
 
@@ -425,7 +425,7 @@ export default function Home() {
                 delayMs={index * 80}
                 className="h-full"
               >
-                <article className="motion-lift flex h-full flex-col rounded-xl border border-[var(--line)] p-6 hover:border-[var(--accent)] hover:bg-[var(--surface)] sm:p-8">
+                <article className="motion-lift group relative isolate flex h-full flex-col overflow-hidden rounded-xl border border-[var(--line)] p-6 transition-colors hover:border-[var(--accent)] hover:bg-[var(--surface)] focus-within:border-[var(--accent)] sm:p-8 before:pointer-events-none before:absolute before:left-0 before:top-0 before:z-20 before:h-[2px] before:w-full before:origin-left before:scale-x-0 before:bg-[var(--accent)] before:transition-transform before:duration-500 before:ease-out before:content-[''] group-hover:before:scale-x-100 group-focus-within:before:scale-x-100">
                   <div className="flex flex-wrap items-center justify-between gap-3">
                     <span className="font-mono text-xs text-[var(--accent)]">
                       {String(index + 1).padStart(2, "0")} / {project.type}
@@ -434,7 +434,7 @@ export default function Home() {
                     <StatusLabel status={project.status} />
                   </div>
 
-                  <h3 className="mt-7 text-2xl font-semibold tracking-[-0.045em] sm:text-3xl">
+                  <h3 className="mt-7 text-2xl font-semibold tracking-[-0.045em] transition-all duration-300 ease-out group-hover:translate-x-1 group-focus-within:translate-x-1 group-hover:text-[var(--accent)] group-focus-within:text-[var(--accent)] sm:text-3xl">
                     {project.name}
                   </h3>
 
