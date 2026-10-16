@@ -7,6 +7,8 @@ const staticRoutes = [
   "",
   "/work",
   "/experiments",
+  "/collaborations",
+  "/collaborations/beyond-the-page",
   "/tgg-hub",
   "/about",
   "/contact"
