@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -10,10 +9,17 @@ const THEME_STORAGE_KEY = "jayjaytgg-theme";
 
 const navigation = [
   { label: "Projects", href: "/work" },
+  { label: "Collaborations", href: "/collaborations" },
   { label: "Experiments", href: "/experiments" },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" }
 ];
+
+function isActiveRoute(pathname: string, href: string) {
+  if (pathname === href) return true;
+
+  return href !== "/" && pathname.startsWith(`${href}/`);
+}
 
 export default function Header() {
   const [open, setOpen] = useState(false);
@@ -60,6 +66,7 @@ export default function Header() {
             <span className="text-base font-bold tracking-[-0.04em]">
               JAYJAYTGG
             </span>
+
             <span className="mt-1 hidden text-[10px] font-medium uppercase tracking-[0.14em] text-[var(--muted)] sm:block">
               Independent builder
             </span>
@@ -70,7 +77,7 @@ export default function Header() {
             className="hidden items-center gap-1 md:flex"
           >
             {navigation.map((item) => {
-              const active = pathname === item.href;
+              const active = isActiveRoute(pathname, item.href);
 
               return (
                 <a
@@ -145,7 +152,7 @@ export default function Header() {
             className="border-t border-[var(--line)] py-3 md:hidden"
           >
             {navigation.map((item) => {
-              const active = pathname === item.href;
+              const active = isActiveRoute(pathname, item.href);
 
               return (
                 <a
