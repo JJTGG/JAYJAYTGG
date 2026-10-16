@@ -1,4 +1,3 @@
-
 @import "tailwindcss";
 
 :root {
@@ -20,7 +19,7 @@
   --selection-background: #DDE6FF;
   --selection-foreground: #171918;
 
-  /* Typography — no external font dependency */
+  /* Typography */
   --font-sans: Inter, ui-sans-serif, system-ui, -apple-system,
     BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-mono: "SFMono-Regular", Consolas, "Liberation Mono",
@@ -31,9 +30,16 @@
   --page-gutter: clamp(1.25rem, 5vw, 3.5rem);
   --section-space: clamp(4.5rem, 10vw, 8rem);
 
-  /* Interaction */
+  /* Motion timing */
   --motion-fast: 140ms;
   --motion-normal: 180ms;
+  --motion-medium: 420ms;
+  --motion-slow: 680ms;
+
+  /* Motion curves */
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* Explicit dark theme */
@@ -54,7 +60,7 @@
   --selection-foreground: #F2F4F7;
 }
 
-/* Follow the device preference unless a theme is explicitly chosen */
+/* Follow device preference unless a theme is explicitly chosen */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]):not([data-theme="dark"]) {
     color-scheme: dark;
@@ -74,6 +80,7 @@
   }
 }
 
+/* Base document */
 * {
   box-sizing: border-box;
 }
@@ -140,6 +147,165 @@ h4 {
   outline-offset: 4px;
 }
 
+/* --------------------------------------------------
+   MOTION FOUNDATION
+   Reusable behaviors; applied selectively by components.
+   -------------------------------------------------- */
+
+/* Signature pulse */
+@keyframes signature-pulse {
+  0%,
+  100% {
+    opacity: 0.7;
+    transform: scale(0.92);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.12);
+  }
+}
+
+.motion-pulse {
+  transform-origin: center;
+  animation: signature-pulse 2.8s ease-in-out infinite;
+}
+
+/* Gentle appearance */
+@keyframes motion-fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.motion-fade-in {
+  animation: motion-fade-in var(--motion-slow) var(--ease-standard) both;
+}
+
+/* Appearance with a small upward settle */
+@keyframes motion-fade-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 16px, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.motion-fade-up {
+  animation: motion-fade-up var(--motion-slow) var(--ease-out) both;
+}
+
+/* Scroll-reveal transition.
+   Elements stay visible by default, including when JavaScript is unavailable.
+   A component may apply .is-pending after setting up observation. */
+.motion-reveal {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity var(--motion-slow) var(--ease-standard),
+    transform var(--motion-slow) var(--ease-out);
+}
+
+.motion-reveal.is-pending {
+  opacity: 0;
+  transform: translate3d(0, 18px, 0);
+}
+
+.motion-reveal.is-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+/* Optional stagger for a group of related elements */
+.motion-stagger > * {
+  animation: motion-fade-up var(--motion-slow) var(--ease-out) both;
+}
+
+.motion-stagger > *:nth-child(1) {
+  animation-delay: 40ms;
+}
+
+.motion-stagger > *:nth-child(2) {
+  animation-delay: 100ms;
+}
+
+.motion-stagger > *:nth-child(3) {
+  animation-delay: 160ms;
+}
+
+.motion-stagger > *:nth-child(4) {
+  animation-delay: 220ms;
+}
+
+.motion-stagger > *:nth-child(5) {
+  animation-delay: 280ms;
+}
+
+.motion-stagger > *:nth-child(n + 6) {
+  animation-delay: 320ms;
+}
+
+/* Kinetic typography primitives.
+   The heading component will apply these selectively. */
+.kinetic-word {
+  display: inline-block;
+}
+
+.kinetic-letter {
+  display: inline-block;
+  transform-origin: 50% 85%;
+  transition:
+    transform var(--motion-medium) var(--ease-out),
+    letter-spacing var(--motion-medium) var(--ease-standard);
+}
+
+.kinetic-word:hover .kinetic-letter:nth-child(3n + 1) {
+  transform: translateY(-0.07em) rotate(-3deg);
+}
+
+.kinetic-word:hover .kinetic-letter:nth-child(3n + 2) {
+  transform: translateY(0.035em) rotate(2deg);
+}
+
+.kinetic-word:hover .kinetic-letter:nth-child(3n) {
+  transform: translateY(-0.045em) rotate(1deg);
+}
+
+/* Subtle movement for interactive surfaces */
+.motion-lift {
+  transition:
+    transform var(--motion-medium) var(--ease-out),
+    border-color var(--motion-normal) var(--ease-standard),
+    background-color var(--motion-normal) var(--ease-standard),
+    box-shadow var(--motion-medium) var(--ease-standard);
+}
+
+.motion-arrow {
+  display: inline-block;
+  transition: transform var(--motion-normal) var(--ease-out);
+}
+
+/* Pointer-specific movement; touch devices retain their normal behavior */
+@media (hover: hover) and (pointer: fine) {
+  .motion-lift:hover {
+    transform: translateY(-3px);
+  }
+
+  a:hover .motion-arrow,
+  button:hover .motion-arrow {
+    transform: translate(3px, -2px);
+  }
+}
+
+/* Global interaction transitions */
 @media (prefers-reduced-motion: no-preference) {
   html {
     scroll-behavior: smooth;
@@ -153,5 +319,39 @@ h4 {
       border-color var(--motion-normal) ease,
       opacity var(--motion-normal) ease,
       transform var(--motion-normal) ease;
+  }
+}
+
+/* Accessibility: remove decorative motion when requested */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
+
+  .motion-reveal.is-pending {
+    opacity: 1;
+    transform: none;
+  }
+
+  .motion-reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  .kinetic-word:hover .kinetic-letter {
+    transform: none;
+  }
+
+  .motion-lift:hover {
+    transform: none;
   }
 }
