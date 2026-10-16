@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 type StageMode =
   | "idea"
@@ -76,7 +76,7 @@ const stages: IdeaStage[] = [
   }
 ];
 
-const LOOP_INTERVAL_MS = 3200;
+const LOOP_INTERVAL_MS = 3000;
 
 function getLetterTransform(
   mode: StageMode,
@@ -95,7 +95,7 @@ function getLetterTransform(
       }px) rotate(${((index % 3) - 1) * 1.5}deg)`;
 
     case "direction":
-      return `translateX(${side * 1.5}px)`;
+      return `translateX(${side * 2}px)`;
 
     case "specification":
       return `translateY(${index % 2 === 0 ? 1 : 0}px)`;
@@ -103,13 +103,11 @@ function getLetterTransform(
     case "prototype":
       return `translateY(${index % 3 === 0 ? -1 : 1}px)`;
 
-    case "product":
-      return "translateY(0) rotate(0deg)";
-
     case "insight":
       return `translateY(${index % 2 === 0 ? -2 : 2}px)`;
 
     case "idea":
+    case "product":
     default:
       return "translateY(0) rotate(0deg)";
   }
@@ -119,57 +117,46 @@ function StageGraphic({ mode }: { mode: StageMode }) {
   switch (mode) {
     case "idea":
       return (
-        <div className="flex min-h-24 items-center justify-center gap-4">
+        <div className="flex min-h-12 items-center justify-center gap-3">
           <span className="h-2 w-2 rounded-full bg-[var(--accent)] motion-pulse" />
-
-          <span className="h-px w-10 bg-[var(--line)]" />
-
-          <span className="text-xs uppercase tracking-[0.2em] text-[var(--muted)]">
+          <span className="h-px w-8 bg-[var(--line)]" />
+          <span className="text-[10px] uppercase tracking-[0.2em] text-[var(--muted)]">
             Potential
           </span>
-
-          <span className="h-px w-10 bg-[var(--line)]" />
-
+          <span className="h-px w-8 bg-[var(--line)]" />
           <span className="h-2 w-2 rounded-full border border-[var(--accent)]" />
         </div>
       );
 
     case "question":
       return (
-        <div className="flex min-h-24 items-center justify-center gap-5">
-          <span className="h-8 w-8 rounded-full border border-[var(--line)]" />
-
-          <span className="text-5xl font-semibold leading-none tracking-[-0.08em] text-[var(--accent)]">
+        <div className="flex min-h-12 items-center justify-center gap-4">
+          <span className="h-5 w-5 rounded-full border border-[var(--line)]" />
+          <span className="text-3xl font-semibold leading-none text-[var(--accent)]">
             ?
           </span>
-
-          <span className="h-12 w-12 rounded-full border border-[var(--line)]" />
-
-          <span className="h-5 w-5 rounded-full border border-[var(--accent)]" />
+          <span className="h-8 w-8 rounded-full border border-[var(--line)]" />
+          <span className="h-3 w-3 rounded-full border border-[var(--accent)]" />
         </div>
       );
 
     case "possibilities":
       return (
-        <div className="grid min-h-24 grid-cols-3 gap-2">
+        <div className="grid grid-cols-3 gap-2">
           {["A", "B", "C"].map((option, index) => (
             <div
               key={option}
-              className={`flex flex-col justify-between rounded-lg border p-3 sm:p-4 ${
+              className={`flex items-center justify-between rounded-md border px-3 py-2 ${
                 index === 1
                   ? "border-[var(--accent)] bg-[var(--surface)]"
                   : "border-[var(--line)]"
               }`}
             >
-              <span className="font-mono text-xs text-[var(--muted)]">
-                PATH 0{index + 1}
-              </span>
-
-              <span className="text-2xl font-semibold tracking-tight">
-                {option}
-              </span>
-
-              <span className="h-1 w-1 rounded-full bg-[var(--accent)]" />
+              <span className="text-sm font-medium">{option}</span>
+              <span
+                className="h-1.5 w-1.5 rounded-full bg-[var(--accent)]"
+                aria-hidden="true"
+              />
             </div>
           ))}
         </div>
@@ -177,21 +164,20 @@ function StageGraphic({ mode }: { mode: StageMode }) {
 
     case "direction":
       return (
-        <div className="flex min-h-24 items-center justify-center gap-2 sm:gap-4">
+        <div className="flex min-h-12 items-center justify-center gap-3">
           {["A", "B", "C"].map((option, index) => (
-            <div key={option} className="flex items-center gap-2 sm:gap-4">
-              <div
-                className={`flex h-12 w-12 items-center justify-center rounded-full border text-sm font-medium transition-colors ${
+            <div key={option} className="flex items-center gap-3">
+              <span
+                className={`flex h-9 w-9 items-center justify-center rounded-full border text-xs font-medium ${
                   index === 1
                     ? "border-[var(--accent)] bg-[var(--accent)] text-white"
                     : "border-[var(--line)] text-[var(--muted)]"
                 }`}
               >
                 {option}
-              </div>
-
+              </span>
               {index < 2 && (
-                <span className="text-[var(--muted)]" aria-hidden="true">
+                <span className="text-xs text-[var(--muted)]" aria-hidden="true">
                   →
                 </span>
               )}
@@ -202,19 +188,13 @@ function StageGraphic({ mode }: { mode: StageMode }) {
 
     case "specification":
       return (
-        <div className="grid min-h-24 grid-cols-2 gap-2">
-          {["INPUT", "RULES", "OUTPUT", "EDGE CASES"].map((item, index) => (
+        <div className="grid grid-cols-2 gap-2">
+          {["INPUT", "RULES", "OUTPUT", "EDGE CASES"].map((item) => (
             <div
               key={item}
-              className="flex items-center gap-3 rounded-md border border-[var(--line)] px-3 py-2"
+              className="rounded-md border border-[var(--line)] px-3 py-2 text-[10px] font-medium tracking-[0.1em] text-[var(--muted)]"
             >
-              <span className="font-mono text-xs text-[var(--accent)]">
-                0{index + 1}
-              </span>
-
-              <span className="text-xs font-medium tracking-[0.08em]">
-                {item}
-              </span>
+              {item}
             </div>
           ))}
         </div>
@@ -222,26 +202,24 @@ function StageGraphic({ mode }: { mode: StageMode }) {
 
     case "prototype":
       return (
-        <div className="min-h-24 rounded-lg border border-[var(--line)] p-3">
-          <div className="flex items-center gap-1.5 border-b border-[var(--line)] pb-3">
+        <div className="rounded-md border border-[var(--line)] p-3">
+          <div className="flex items-center gap-1.5 border-b border-[var(--line)] pb-2">
             <span className="h-1.5 w-1.5 rounded-full bg-[var(--line)]" />
             <span className="h-1.5 w-1.5 rounded-full bg-[var(--line)]" />
             <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent)]" />
-
-            <span className="ml-2 font-mono text-[10px] text-[var(--muted)]">
+            <span className="ml-2 text-[10px] text-[var(--muted)]">
               FIRST WORKING FORM
             </span>
           </div>
 
-          <div className="grid grid-cols-[1fr_2fr] gap-3 pt-3">
+          <div className="grid grid-cols-[1fr_1.5fr] gap-3 pt-3">
             <div className="space-y-2">
-              <div className="h-3 rounded-sm bg-[var(--surface)]" />
-              <div className="h-3 w-3/4 rounded-sm bg-[var(--surface)]" />
-              <div className="h-3 w-1/2 rounded-sm bg-[var(--surface)]" />
+              <div className="h-2 rounded-sm bg-[var(--line)]" />
+              <div className="h-2 w-3/4 rounded-sm bg-[var(--line)]" />
+              <div className="h-2 w-1/2 rounded-sm bg-[var(--line)]" />
             </div>
-
-            <div className="flex items-center justify-center rounded-md border border-[var(--accent)] p-3">
-              <span className="text-xs font-medium">Test the idea ↗</span>
+            <div className="flex items-center justify-center rounded-md border border-[var(--accent)] p-2 text-[10px] font-medium">
+              Test the idea ↗
             </div>
           </div>
         </div>
@@ -249,42 +227,35 @@ function StageGraphic({ mode }: { mode: StageMode }) {
 
     case "product":
       return (
-        <div className="flex min-h-24 items-center gap-4 rounded-lg border border-[var(--accent)] bg-[var(--surface)] p-4">
-          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-md bg-[var(--accent)] text-xl font-semibold text-white">
+        <div className="flex items-center gap-3 rounded-md border border-[var(--accent)] bg-[var(--surface)] p-3">
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-[var(--accent)] text-lg font-semibold text-white">
             ✓
-          </div>
-
-          <div className="min-w-0 flex-1">
-            <p className="text-sm font-semibold tracking-tight">
-              Form. Function. Use.
-            </p>
-
-            <p className="mt-1 text-xs leading-5 text-[var(--muted)]">
-              The idea has taken a usable form.
+          </span>
+          <div>
+            <p className="text-sm font-semibold">Form. Function. Use.</p>
+            <p className="text-xs text-[var(--muted)]">
+              Something usable now exists.
             </p>
           </div>
-
-          <span className="text-lg text-[var(--accent)]">↗</span>
         </div>
       );
 
     case "insight":
       return (
-        <div className="flex min-h-24 flex-wrap items-center justify-center gap-2 sm:gap-3">
+        <div className="flex flex-wrap items-center justify-center gap-2">
           {["RESULT", "LEARNING", "NEXT IDEA"].map((item, index) => (
-            <div key={item} className="flex items-center gap-2 sm:gap-3">
+            <div key={item} className="flex items-center gap-2">
               <span
-                className={`rounded-full border px-3 py-2 text-xs font-medium ${
+                className={`rounded-full border px-2.5 py-1.5 text-[10px] font-medium ${
                   index === 2
                     ? "border-[var(--accent)] text-[var(--accent)]"
-                    : "border-[var(--line)]"
+                    : "border-[var(--line)] text-[var(--muted)]"
                 }`}
               >
                 {item}
               </span>
-
               {index < 2 && (
-                <span className="text-[var(--muted)]" aria-hidden="true">
+                <span className="text-xs text-[var(--muted)]" aria-hidden="true">
                   →
                 </span>
               )}
@@ -303,7 +274,6 @@ export default function IdeaEvolution() {
   const [isPlaying, setIsPlaying] = useState(true);
   const [reducedMotion, setReducedMotion] = useState(false);
 
-  const previousLength = useRef(stages[0].word.length);
   const activeStage = stages[activeIndex];
 
   useEffect(() => {
@@ -312,11 +282,9 @@ export default function IdeaEvolution() {
     );
 
     function updateMotionPreference() {
-      const prefersReducedMotion = preference.matches;
+      setReducedMotion(preference.matches);
 
-      setReducedMotion(prefersReducedMotion);
-
-      if (prefersReducedMotion) {
+      if (preference.matches) {
         setIsPlaying(false);
       }
     }
@@ -336,31 +304,14 @@ export default function IdeaEvolution() {
       setActiveIndex((current) => (current + 1) % stages.length);
     }, LOOP_INTERVAL_MS);
 
-    return () => {
-      window.clearInterval(timer);
-    };
+    return () => window.clearInterval(timer);
   }, [isPlaying, reducedMotion]);
-
-  useEffect(() => {
-    previousLength.current = activeStage.word.length;
-  }, [activeStage.word.length]);
-
-  function showPreviousStage() {
-    setActiveIndex(
-      (current) => (current - 1 + stages.length) % stages.length
-    );
-  }
-
-  function showNextStage() {
-    setActiveIndex((current) => (current + 1) % stages.length);
-  }
 
   return (
     <section
       aria-label="The evolution of an idea"
-      className="relative isolate overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-5 sm:p-7"
+      className="relative isolate overflow-hidden rounded-xl border border-[var(--line)] bg-[var(--surface)] p-4 sm:p-5"
     >
-      {/* Restrained technical grid */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 -z-10 opacity-40"
@@ -369,149 +320,73 @@ export default function IdeaEvolution() {
             "linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px)",
           backgroundSize: "28px 28px",
           maskImage:
-            "linear-gradient(to bottom, transparent, black 25%, black 75%, transparent)"
+            "linear-gradient(to bottom, transparent, black 20%, black 80%, transparent)"
         }}
       />
 
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-2">
-          <span className="h-2 w-2 rounded-full bg-[var(--accent)] motion-pulse" />
-
-          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">
-            An idea in motion
-          </p>
-        </div>
-
-        <span className="font-mono text-xs text-[var(--muted)]">
-          {String(activeIndex + 1).padStart(2, "0")} /{" "}
-          {String(stages.length).padStart(2, "0")}
-        </span>
+      <div className="flex items-center gap-2">
+        <span className="h-2 w-2 rounded-full bg-[var(--accent)] motion-pulse" />
+        <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">
+          An idea in motion
+        </p>
       </div>
 
-      {/* Evolving typography */}
-      <div className="relative py-9 sm:py-12">
-        <p className="mb-4 text-center text-[10px] font-medium uppercase tracking-[0.2em] text-[var(--muted)]">
-          From possibility to reality
-        </p>
-
-        <h2 className="min-h-16 text-center text-[clamp(1.65rem,5.8vw,4.2rem)] font-semibold leading-tight tracking-[-0.065em]">
+      <div className="py-5 sm:py-6">
+        <h2
+          key={activeStage.id}
+          className="motion-fade-up flex min-h-10 items-center justify-center overflow-hidden text-center text-[clamp(1.35rem,4.4vw,3rem)] font-semibold leading-tight tracking-[-0.07em]"
+        >
           <span className="sr-only">{activeStage.word}</span>
-
-          <span aria-hidden="true" className="kinetic-word whitespace-nowrap">
-            {activeStage.word.split("").map((letter, index) => {
-              const isNewLetter = index >= previousLength.current;
-
-              return (
-                <span
-                  key={index}
-                  className="kinetic-letter"
-                  style={{
-                    transform: getLetterTransform(
-                      activeStage.mode,
-                      index,
-                      activeStage.word.length
-                    ),
-                    animation: isNewLetter
-                      ? "motion-fade-up 680ms var(--ease-out) both"
-                      : undefined,
-                    animationDelay: isNewLetter
-                      ? `${Math.min(
-                          (index - previousLength.current) * 35,
-                          220
-                        )}ms`
-                      : undefined
-                  }}
-                >
-                  {letter}
-                </span>
-              );
-            })}
+          <span aria-hidden="true" className="kinetic-word">
+            {activeStage.word.split("").map((letter, index) => (
+              <span
+                key={`${activeStage.id}-${index}`}
+                className="kinetic-letter"
+                style={{
+                  transform: getLetterTransform(
+                    activeStage.mode,
+                    index,
+                    activeStage.word.length
+                  ),
+                  animationDelay: `${Math.min(index * 18, 180)}ms`
+                }}
+              >
+                {letter}
+              </span>
+            ))}
           </span>
         </h2>
 
         <p
-          key={activeStage.id}
-          className="motion-fade-in mt-4 min-h-6 text-center text-sm leading-6 text-[var(--muted)]"
+          key={`${activeStage.id}-description`}
+          className="motion-fade-in mt-2 min-h-5 text-center text-xs leading-5 text-[var(--muted)]"
           aria-live="off"
         >
           {activeStage.description}
         </p>
 
-        <div
-          key={`${activeStage.id}-graphic`}
-          className="motion-fade-up mt-7"
-        >
+        <div key={`${activeStage.id}-graphic`} className="motion-fade-up mt-4">
           <StageGraphic mode={activeStage.mode} />
         </div>
       </div>
 
-      {/* Explicit, predictable controls */}
-      <div className="border-t border-[var(--line)] pt-4">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <p className="text-xs text-[var(--muted)]">
-            {reducedMotion
-              ? "Automatic motion disabled by your device preference."
-              : isPlaying
-                ? "The sequence repeats automatically."
-                : "The sequence is paused."}
-          </p>
+      <div className="flex items-center justify-between gap-3 border-t border-[var(--line)] pt-3">
+        <p className="text-[10px] text-[var(--muted)]">
+          {reducedMotion
+            ? "Automatic motion is disabled."
+            : isPlaying
+              ? "An idea, taking shape."
+              : "The sequence is paused."}
+        </p>
 
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={showPreviousStage}
-              aria-label="Previous idea stage"
-              className="flex h-10 w-10 items-center justify-center rounded-md border border-[var(--line)] text-sm transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)]"
-            >
-              ←
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setIsPlaying((playing) => !playing)}
-              disabled={reducedMotion}
-              className="min-h-10 rounded-md border border-[var(--line)] px-3 text-xs font-medium transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)] disabled:cursor-not-allowed disabled:opacity-60"
-            >
-              {isPlaying ? "Pause" : "Play sequence"}
-            </button>
-
-            <button
-              type="button"
-              onClick={showNextStage}
-              aria-label="Next idea stage"
-              className="flex h-10 w-10 items-center justify-center rounded-md border border-[var(--line)] text-sm transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)]"
-            >
-              →
-            </button>
-          </div>
-        </div>
-
-        <div
-          role="group"
-          aria-label="Choose an idea stage"
-          className="mt-4 flex flex-wrap gap-2"
+        <button
+          type="button"
+          onClick={() => setIsPlaying((playing) => !playing)}
+          disabled={reducedMotion}
+          className="motion-lift min-h-9 shrink-0 rounded-md border border-[var(--line)] px-3 py-2 text-xs font-medium transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)] disabled:cursor-not-allowed disabled:opacity-60"
         >
-          {stages.map((stage, index) => {
-            const active = index === activeIndex;
-
-            return (
-              <button
-                key={stage.id}
-                type="button"
-                onClick={() => setActiveIndex(index)}
-                aria-label={`Show stage ${index + 1}: ${stage.word}`}
-                aria-current={active ? "step" : undefined}
-                className={`flex h-8 min-w-8 items-center justify-center rounded-md border px-2 font-mono text-[10px] transition-colors ${
-                  active
-                    ? "border-[var(--accent)] bg-[var(--accent)] text-white"
-                    : "border-[var(--line)] text-[var(--muted)] hover:border-[var(--accent)] hover:text-[var(--accent)]"
-                }`}
-              >
-                {String(index + 1).padStart(2, "0")}
-              </button>
-            );
-          })}
-        </div>
+          {isPlaying ? "Pause sequence" : "Resume sequence"}
+        </button>
       </div>
     </section>
   );
