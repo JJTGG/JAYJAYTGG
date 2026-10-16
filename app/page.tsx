@@ -1,6 +1,6 @@
 import Link from "next/link";
 import IdeaEvolution from "../components/IdeaEvolution";
-import ScrollReveal from "../components/ScrollReveal";
+import ScrollReveal from "./components/ScrollReveal";
 import { projects, type Project } from "../lib/projects";
 
 const featuredProjects = projects.filter(
