@@ -253,8 +253,7 @@ h4 {
   animation-delay: 320ms;
 }
 
-/* Kinetic typography primitives.
-   The heading component will apply these selectively. */
+/* Kinetic typography primitives */
 .kinetic-word {
   display: inline-block;
 }
@@ -279,7 +278,7 @@ h4 {
   transform: translateY(-0.045em) rotate(1deg);
 }
 
-/* Subtle movement for interactive surfaces */
+/* Interactive surfaces: movement, visual feedback and tactile press */
 .motion-lift {
   transition:
     transform var(--motion-medium) var(--ease-out),
@@ -293,16 +292,32 @@ h4 {
   transition: transform var(--motion-normal) var(--ease-out);
 }
 
-/* Pointer-specific movement; touch devices retain their normal behavior */
+/* Hover movement is limited to devices with a precise pointer */
 @media (hover: hover) and (pointer: fine) {
   .motion-lift:hover {
-    transform: translateY(-3px);
+    transform: translateY(-3px) scale(1.008);
+    box-shadow: 0 10px 26px
+      color-mix(in srgb, var(--foreground) 8%, transparent);
   }
 
   a:hover .motion-arrow,
   button:hover .motion-arrow {
     transform: translate(3px, -2px);
   }
+}
+
+/* Pressing feels different from hovering */
+.motion-lift:active {
+  transform: translateY(0) scale(0.985);
+  box-shadow: 0 2px 6px
+    color-mix(in srgb, var(--foreground) 5%, transparent);
+  transition-duration: var(--motion-fast);
+}
+
+/* A focused control gives its containing surface feedback */
+.motion-lift:focus-within {
+  box-shadow: 0 0 0 3px
+    color-mix(in srgb, var(--focus-ring) 14%, transparent);
 }
 
 /* Global interaction transitions */
@@ -351,7 +366,13 @@ h4 {
     transform: none;
   }
 
-  .motion-lift:hover {
+  .motion-lift:hover,
+  .motion-lift:active {
     transform: none;
+    box-shadow: none;
+  }
+
+  .motion-lift:focus-within {
+    box-shadow: none;
   }
 }
