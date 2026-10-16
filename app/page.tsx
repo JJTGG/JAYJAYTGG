@@ -1,5 +1,4 @@
 import Link from "next/link";
-import IdeaEvolution from "../components/IdeaEvolution";
 import ScrollReveal from "./components/ScrollReveal";
 import { projects, type Project } from "../lib/projects";
 
@@ -70,9 +69,8 @@ export default function Home() {
     <main className="overflow-hidden">
       {/* Hero */}
       <section className="border-b border-[var(--line)]">
-        <div className="relative mx-auto w-full max-w-[1240px] px-[var(--page-gutter)] py-16 sm:py-20 md:py-24 lg:py-28">
-          {/* The hero text alone determines the layout height */}
-          <div className="relative z-10 w-full max-w-3xl md:max-w-[60%]">
+        <div className="mx-auto w-full max-w-[1240px] px-[var(--page-gutter)] py-16 sm:py-20 md:py-24 lg:py-28">
+          <div className="w-full max-w-3xl">
             <p className="mb-7 flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--accent)]">
               <span
                 aria-hidden="true"
@@ -115,13 +113,6 @@ export default function Home() {
                   ↗
                 </span>
               </Link>
-            </div>
-          </div>
-
-          {/* The animation floats over the hero and reserves no layout space */}
-          <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
-            <div className="pointer-events-auto absolute bottom-5 right-0 w-[44%] opacity-20 sm:bottom-8 sm:w-[38%] sm:opacity-35 md:bottom-10 md:w-[min(36%,420px)] md:opacity-100 [&>section]:!rounded-none [&>section]:!border-0 [&>section]:!bg-transparent [&>section]:!p-0 [&>section>div:first-child]:!hidden [&>section>div:last-child]:!border-t-0 [&>section>div:last-child]:!pt-0">
-              <IdeaEvolution />
             </div>
           </div>
         </div>
@@ -338,7 +329,10 @@ export default function Home() {
       </section>
 
       {/* Developing systems */}
-      <section id="systems" className="scroll-mt-8 border-b border-[var(--line)]">
+      <section
+        id="systems"
+        className="scroll-mt-8 border-b border-[var(--line)]"
+      >
         <div className="mx-auto w-full max-w-[1240px] px-[var(--page-gutter)] py-20 sm:py-24 lg:py-28">
           <ScrollReveal>
             <div className="max-w-3xl">
