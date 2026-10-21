@@ -7,6 +7,9 @@ const featuredProjects = projects.filter(
   (project) => project.portfolioSection === "featured"
 );
 
+const leadProject = featuredProjects[0];
+const supportingProjects = featuredProjects.slice(1);
+
 const developingSystems = projects.filter(
   (project) => project.portfolioSection === "systems"
 );
@@ -180,7 +183,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Featured products */}
+      {/* Featured products — editorial lead and supporting work */}
       <section
         id="selected-work"
         className="scroll-mt-8 border-b border-[var(--line)]"
@@ -200,7 +203,7 @@ export default function Home() {
 
               <Link
                 href="/work"
-                className="inline-flex shrink-0 items-center gap-2 text-sm font-medium text-[var(--muted)] hover:text-[var(--accent)]"
+                className="group inline-flex shrink-0 items-center gap-2 text-sm font-medium text-[var(--muted)] transition-colors hover:text-[var(--accent)]"
               >
                 Browse all projects
                 <span className="motion-arrow" aria-hidden="true">
@@ -210,92 +213,135 @@ export default function Home() {
             </div>
           </ScrollReveal>
 
-          <div className="mt-12 grid items-stretch gap-4 md:grid-cols-2">
-            {featuredProjects.map((project, index) => (
-              <ScrollReveal
-                key={project.slug}
-                delayMs={Math.min(index * 80, 320)}
-                className={index === 0 ? "md:col-span-2" : ""}
-              >
-                <article
-                  className={`motion-lift group relative isolate h-full overflow-hidden rounded-xl border border-[var(--line)] bg-[var(--background)] hover:border-[var(--accent)] focus-within:border-[var(--accent)] before:pointer-events-none before:absolute before:left-0 before:top-0 before:z-20 before:h-[2px] before:w-full before:origin-left before:scale-x-0 before:bg-[var(--accent)] before:transition-transform before:duration-500 before:ease-out before:content-[''] group-hover:before:scale-x-100 group-focus-within:before:scale-x-100 ${
-                    index === 0
-                      ? "md:grid md:grid-cols-[minmax(0,1.3fr)_minmax(220px,0.7fr)]"
-                      : ""
-                  }`}
-                >
-                  <div className="flex h-full flex-col p-6 sm:p-8 md:p-9">
+          {leadProject && (
+            <ScrollReveal delayMs={80}>
+              <article className="group relative isolate mt-12 overflow-hidden border-y border-[var(--line)]">
+                <div className="grid md:grid-cols-[minmax(0,1.1fr)_minmax(280px,0.9fr)]">
+                  <div className="flex min-w-0 flex-col py-7 sm:py-9 md:py-11 md:pr-10 lg:pr-14">
                     <div className="flex flex-wrap items-center justify-between gap-3">
                       <span className="font-mono text-xs text-[var(--accent)]">
-                        {String(index + 1).padStart(2, "0")} / {project.type}
+                        001 / {leadProject.type}
                       </span>
-
-                      <StatusLabel status={project.status} />
+                      <StatusLabel status={leadProject.status} />
                     </div>
 
-                    <h3 className="mt-8 text-3xl font-semibold tracking-[-0.05em] transition-all duration-300 ease-out group-hover:translate-x-1 group-focus-within:translate-x-1 group-hover:text-[var(--accent)] group-focus-within:text-[var(--accent)] sm:text-4xl">
-                      {project.name}
+                    <h3 className="mt-8 text-[clamp(2.8rem,7vw,5.8rem)] font-semibold leading-[0.94] tracking-[-0.075em] transition-transform duration-500 ease-out group-hover:translate-x-1">
+                      {leadProject.name}
                     </h3>
 
-                    <p className="mt-4 max-w-xl text-sm leading-7 text-[var(--muted)] sm:text-base sm:leading-8">
-                      {project.shortDescription}
+                    <p className="mt-6 max-w-xl text-base leading-8 text-[var(--muted)] sm:text-lg sm:leading-9">
+                      {leadProject.description}
                     </p>
 
-                    {index === 0 && (
-                      <p className="mt-5 max-w-xl text-sm leading-7 text-[var(--muted)]">
-                        A product built for a global audience, continuing
-                        through the work of refinement after its public release.
+                    {leadProject.credit && (
+                      <p className="mt-5 text-xs text-[var(--muted)]">
+                        {leadProject.credit}
                       </p>
                     )}
 
-                    <div className="mt-auto">
-                      {project.credit && (
-                        <p className="mt-5 text-xs text-[var(--muted)]">
-                          {project.credit}
-                        </p>
-                      )}
-
-                      <ProjectLinks project={project} />
+                    <div className="mt-auto pt-7">
+                      <ProjectLinks project={leadProject} />
                     </div>
                   </div>
 
-                  {index === 0 && (
-                    <div className="relative hidden min-h-[320px] overflow-hidden border-l border-[var(--line)] bg-[var(--surface)] p-7 md:flex md:flex-col md:justify-between">
-                      <div
-                        aria-hidden="true"
-                        className="pointer-events-none absolute inset-0 opacity-40"
-                        style={{
-                          backgroundImage:
-                            "linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px)",
-                          backgroundSize: "32px 32px"
-                        }}
-                      />
+                  <div className="relative isolate flex min-h-[260px] flex-col justify-between overflow-hidden border-t border-[var(--line)] bg-[var(--surface)] p-6 sm:min-h-[320px] sm:p-8 md:border-l md:border-t-0 lg:p-10">
+                    <div
+                      aria-hidden="true"
+                      className="pointer-events-none absolute inset-0 -z-10 opacity-40"
+                      style={{
+                        backgroundImage:
+                          "linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px)",
+                        backgroundSize: "32px 32px"
+                      }}
+                    />
 
-                      <div className="relative flex items-start justify-between gap-3">
-                        <span className="text-xs font-medium uppercase tracking-[0.15em] text-[var(--muted)]">
-                          Social / Communication
-                        </span>
+                    <div className="flex items-start justify-between gap-4">
+                      <span className="text-xs font-medium uppercase tracking-[0.16em] text-[var(--muted)]">
+                        Lead project
+                      </span>
+                      <span className="font-mono text-xs text-[var(--muted)]">
+                        01 / {String(featuredProjects.length).padStart(2, "0")}
+                      </span>
+                    </div>
 
-                        <span className="motion-arrow text-sm text-[var(--accent)]">
-                          ↗
-                        </span>
-                      </div>
+                    <div className="py-8">
+                      <span className="block origin-bottom-left text-[clamp(7rem,17vw,12rem)] font-semibold leading-[0.8] tracking-[-0.12em] text-[var(--accent)] transition-transform duration-500 ease-out group-hover:-translate-y-2 group-hover:scale-[1.03]">
+                        {leadProject.name.slice(0, 1)}.
+                      </span>
 
-                      <div className="relative">
-                        <span className="origin-bottom-left block text-[clamp(5rem,10vw,9rem)] font-semibold leading-none tracking-[-0.09em] text-[var(--accent)] transition-transform duration-500 ease-out group-hover:-translate-y-3 group-hover:scale-[1.04] group-focus-within:-translate-y-3 group-focus-within:scale-[1.04]">
-                          A.
-                        </span>
-
-                        <p className="mt-4 max-w-xs text-sm leading-6 text-[var(--muted)]">
-                          People first. Conversation at the center.
-                        </p>
+                      <div className="mt-8 flex flex-wrap gap-x-4 gap-y-2 text-[10px] font-medium uppercase tracking-[0.13em] text-[var(--muted)] sm:gap-x-5">
+                        <span>People</span>
+                        <span aria-hidden="true">/</span>
+                        <span>Content</span>
+                        <span aria-hidden="true">/</span>
+                        <span>Discovery</span>
+                        <span aria-hidden="true">/</span>
+                        <span>Communication</span>
                       </div>
                     </div>
-                  )}
-                </article>
-              </ScrollReveal>
-            ))}
-          </div>
+
+                    <p className="max-w-xs text-sm leading-6 text-[var(--muted)]">
+                      A closer look at the thinking, trade-offs and systems
+                      behind the product.
+                    </p>
+                  </div>
+                </div>
+              </article>
+            </ScrollReveal>
+          )}
+
+          {supportingProjects.length > 0 && (
+            <div className="mt-12">
+              <div className="mb-3 flex items-center justify-between gap-4">
+                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">
+                  More selected work
+                </p>
+                <span className="font-mono text-[10px] text-[var(--muted)]">
+                  002—{String(featuredProjects.length).padStart(2, "0")}
+                </span>
+              </div>
+
+              <div className="border-t border-[var(--line)]">
+                {supportingProjects.map((project, index) => (
+                  <ScrollReveal key={project.slug} delayMs={index * 70}>
+                    <article className="group relative isolate grid gap-4 overflow-hidden border-b border-[var(--line)] py-6 transition-colors duration-300 hover:bg-[var(--surface)] focus-within:bg-[var(--surface)] sm:py-7 md:grid-cols-[52px_minmax(0,0.8fr)_minmax(0,1.2fr)] md:items-start md:gap-6 before:pointer-events-none before:absolute before:inset-y-0 before:left-0 before:z-10 before:w-[2px] before:origin-top before:scale-y-0 before:bg-[var(--accent)] before:transition-transform before:duration-300 before:ease-out before:content-[''] group-hover:before:scale-y-100 group-focus-within:before:scale-y-100">
+                      <span className="pl-3 font-mono text-xs text-[var(--accent)] transition-transform duration-300 ease-out group-hover:translate-x-1 group-focus-within:translate-x-1">
+                        {String(index + 2).padStart(3, "0")}
+                      </span>
+
+                      <div className="min-w-0 px-3 md:px-0">
+                        <p className="text-[10px] font-medium uppercase tracking-[0.14em] text-[var(--muted)]">
+                          {project.type}
+                        </p>
+
+                        <h3 className="mt-2 text-2xl font-semibold tracking-[-0.05em] transition-all duration-300 ease-out group-hover:translate-x-1 group-focus-within:translate-x-1 group-hover:text-[var(--accent)] group-focus-within:text-[var(--accent)] sm:text-3xl">
+                          {project.name}
+                        </h3>
+
+                        <div className="mt-3">
+                          <StatusLabel status={project.status} />
+                        </div>
+                      </div>
+
+                      <div className="min-w-0 px-3 md:px-0">
+                        <p className="max-w-2xl text-sm leading-7 text-[var(--muted)] sm:text-base sm:leading-8">
+                          {project.shortDescription}
+                        </p>
+
+                        {project.credit && (
+                          <p className="mt-3 text-xs text-[var(--muted)]">
+                            {project.credit}
+                          </p>
+                        )}
+
+                        <ProjectLinks project={project} />
+                      </div>
+                    </article>
+                  </ScrollReveal>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </section>
 
