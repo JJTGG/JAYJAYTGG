@@ -1,4 +1,5 @@
 import Link from "next/link";
+import KineticHeading from "../components/KineticHeading";
 import ScrollReveal from "./components/ScrollReveal";
 import { projects, type Project } from "../lib/projects";
 
@@ -79,13 +80,14 @@ export default function Home() {
               Independent builder
             </p>
 
-            <h1 className="max-w-3xl text-[clamp(3.1rem,6.8vw,6.8rem)] font-semibold leading-[0.91] tracking-[-0.075em]">
-              I build ideas
-              <span className="block">into things that</span>
-              <span className="block text-[var(--accent)]">
-                actually exist.
-              </span>
-            </h1>
+            <KineticHeading
+              lines={[
+                "I build ideas",
+                "into things that",
+                "actually exist."
+              ]}
+              accentLine={2}
+            />
 
             <p className="mt-8 max-w-xl text-base leading-8 text-[var(--muted)] sm:text-lg sm:leading-9">
               Products, tools, experiments and systems. I build to find out
