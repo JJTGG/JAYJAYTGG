@@ -136,6 +136,48 @@ export default function AboutPage() {
             </div>
           </div>
 
+          {/* Backendvert — a small personal easter egg */}
+          <aside
+            aria-labelledby="backendvert-title"
+            className="mt-16 border-y border-[var(--line)] py-6 sm:mt-20 sm:py-7"
+          >
+            <div className="grid gap-4 md:grid-cols-[minmax(0,0.8fr)_minmax(0,1.4fr)] md:gap-16">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">
+                  Personal note / Unofficial classification
+                </p>
+
+                <h2
+                  id="backendvert-title"
+                  className="mt-3 text-2xl font-semibold tracking-[-0.045em] sm:text-3xl"
+                >
+                  The Backendvert
+                </h2>
+
+                <p className="mt-2 text-xs leading-5 text-[var(--muted)]">
+                  A personality type currently under development.
+                </p>
+              </div>
+
+              <div className="text-sm leading-7 text-[var(--muted)] sm:text-base sm:leading-8">
+                <p className="font-medium text-[var(--foreground)]">
+                  Introvert by nature. Infrastructure-minded by choice.
+                </p>
+
+                <p className="mt-3">
+                  I build systems designed to face the world while
+                  preferring to work behind the scenes. My projects
+                  can have the spotlight; I don't necessarily need it.
+                </p>
+
+                <p className="mt-3 font-medium text-[var(--foreground)]">
+                  Public products. Private developer. API connections
+                  preferred.
+                </p>
+              </div>
+            </div>
+          </aside>
+
           {/* TGG HUB */}
           <div className="mt-20 grid gap-8 border-t border-[var(--line)] pt-16 sm:mt-24 sm:pt-20 md:grid-cols-[minmax(0,0.8fr)_minmax(0,1.4fr)] md:gap-16">
             <div>
