@@ -59,19 +59,39 @@ function StatusLabel({ status }: { status: string }) {
 }
 
 const workPaths = [
-  { number: "01", label: "Products", href: "#selected-work" },
-  { number: "02", label: "Systems", href: "#systems" },
-  { number: "03", label: "Experiments", href: "#experiments" },
-  { number: "04", label: "Collaborations", href: "#collaborations" }
+  {
+    number: "01",
+    label: "Products",
+    description: "Things people can explore and use",
+    href: "#selected-work"
+  },
+  {
+    number: "02",
+    label: "Systems",
+    description: "Infrastructure and work in progress",
+    href: "#systems"
+  },
+  {
+    number: "03",
+    label: "Experiments",
+    description: "Tests, questions and explorations",
+    href: "#experiments"
+  },
+  {
+    number: "04",
+    label: "Collaborations",
+    description: "Websites built for other people",
+    href: "#collaborations"
+  }
 ];
 
 export default function Home() {
   return (
     <main className="overflow-hidden">
-      {/* Hero */}
+      {/* Hero / direct paths into the work */}
       <section className="border-b border-[var(--line)]">
-        <div className="mx-auto w-full max-w-[1240px] px-[var(--page-gutter)] py-16 sm:py-20 md:py-24 lg:py-28">
-          <div className="w-full max-w-3xl">
+        <div className="mx-auto grid w-full max-w-[1240px] gap-12 px-[var(--page-gutter)] py-16 sm:py-20 md:grid-cols-[minmax(0,1.25fr)_minmax(260px,0.75fr)] md:items-center md:gap-10 md:py-24 lg:gap-16 lg:py-28">
+          <div className="w-full min-w-0">
             <p className="mb-7 flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--accent)]">
               <span
                 aria-hidden="true"
@@ -117,41 +137,46 @@ export default function Home() {
               </Link>
             </div>
           </div>
-        </div>
 
-        {/* Direct paths into the portfolio */}
-        <div className="border-t border-[var(--line)]">
-          <div className="mx-auto flex w-full max-w-[1240px] flex-col gap-4 px-[var(--page-gutter)] py-5 sm:flex-row sm:items-center sm:justify-between">
-            <p className="shrink-0 text-xs font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">
+          <nav
+            aria-label="Explore portfolio categories"
+            className="border-t border-[var(--line)] pt-6 md:border-l md:border-t-0 md:pl-8 md:pt-0"
+          >
+            <p className="mb-4 text-xs font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">
               Find your way in
             </p>
 
-            <nav
-              aria-label="Explore portfolio categories"
-              className="flex flex-wrap gap-x-5 gap-y-3"
-            >
+            <div className="divide-y divide-[var(--line)]">
               {workPaths.map((path) => (
                 <a
                   key={path.href}
                   href={path.href}
-                  className="group inline-flex items-center gap-2 text-sm transition-colors hover:text-[var(--accent)]"
+                  className="group relative isolate flex min-h-[76px] items-center gap-4 overflow-hidden px-3 py-4 transition-colors duration-200 hover:bg-[var(--surface)] focus-visible:bg-[var(--surface)] before:pointer-events-none before:absolute before:bottom-0 before:left-0 before:top-0 before:z-10 before:w-[2px] before:origin-top before:scale-y-0 before:bg-[var(--accent)] before:transition-transform before:duration-300 before:ease-out before:content-[''] hover:before:scale-y-100 focus-visible:before:scale-y-100"
                 >
-                  <span className="font-mono text-[10px] text-[var(--muted)]">
+                  <span className="w-6 shrink-0 font-mono text-[10px] text-[var(--muted)] transition-colors duration-200 group-hover:text-[var(--accent)]">
                     {path.number}
                   </span>
 
-                  <span>{path.label}</span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block text-base font-semibold tracking-[-0.025em] transition-transform duration-200 ease-out group-hover:translate-x-1 group-focus-visible:translate-x-1">
+                      {path.label}
+                    </span>
+
+                    <span className="mt-1 block text-xs leading-5 text-[var(--muted)]">
+                      {path.description}
+                    </span>
+                  </span>
 
                   <span
-                    className="motion-arrow text-[var(--muted)]"
+                    className="motion-arrow shrink-0 text-sm text-[var(--muted)] transition-colors group-hover:text-[var(--accent)] group-focus-visible:text-[var(--accent)]"
                     aria-hidden="true"
                   >
-                    ↘
+                    ↗
                   </span>
                 </a>
               ))}
-            </nav>
-          </div>
+            </div>
+          </nav>
         </div>
       </section>
 
