@@ -12,6 +12,55 @@ import {
 const THEME_STORAGE_KEY = "jayjaytgg-theme";
 const THEME_CHANGE_EVENT = "jayjaytgg:theme-change";
 
+type RecognitionAlternative = {
+  transcript: string;
+};
+
+type RecognitionResult = ArrayLike<RecognitionAlternative> & {
+  isFinal: boolean;
+};
+
+type RecognitionResultEvent = {
+  resultIndex: number;
+  results: ArrayLike<RecognitionResult>;
+};
+
+type RecognitionErrorEvent = {
+  error: string;
+};
+
+type BrowserSpeechRecognition = {
+  lang: string;
+  continuous: boolean;
+  interimResults: boolean;
+  maxAlternatives: number;
+  onstart: (() => void) | null;
+  onresult: ((event: RecognitionResultEvent) => void) | null;
+  onerror: ((event: RecognitionErrorEvent) => void) | null;
+  onend: (() => void) | null;
+  start: () => void;
+  stop: () => void;
+  abort: () => void;
+};
+
+type RecognitionConstructor = new () => BrowserSpeechRecognition;
+
+type WindowWithSpeechRecognition = Window & {
+  SpeechRecognition?: RecognitionConstructor;
+  webkitSpeechRecognition?: RecognitionConstructor;
+};
+
+function getRecognitionConstructor():
+  | RecognitionConstructor
+  | undefined {
+  const speechWindow = window as WindowWithSpeechRecognition;
+
+  return (
+    speechWindow.SpeechRecognition ??
+    speechWindow.webkitSpeechRecognition
+  );
+}
+
 function applyTheme(theme: CommandTheme) {
   document.documentElement.dataset.theme = theme;
 
@@ -28,78 +77,258 @@ function applyTheme(theme: CommandTheme) {
   );
 }
 
+function getRecognitionErrorMessage(error: string): string {
+  switch (error) {
+    case "not-allowed":
+    case "service-not-allowed":
+      return "Microphone access or speech recognition was denied. Check your browser permissions and try again.";
+
+    case "no-speech":
+      return "No speech was detected. Try again or type the command.";
+
+    case "audio-capture":
+      return "No usable microphone was found. Check your device or type the command.";
+
+    case "network":
+      return "The browser's speech-recognition service could not be reached. Try again or type the command.";
+
+    case "language-not-supported":
+      return "The browser cannot recognize the configured language. Type the command instead.";
+
+    case "aborted":
+      return "Voice capture was cancelled.";
+
+    default:
+      return "Voice recognition encountered a problem. You can retry or type the command.";
+  }
+}
+
 export default function CommandPalette() {
   const router = useRouter();
   const pathname = usePathname();
 
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
-  const [result, setResult] = useState<CommandDispatchResult | null>(null);
+  const [result, setResult] = useState<CommandDispatchResult | null>(
+    null
+  );
+
+  const [recognitionAvailable, setRecognitionAvailable] = useState<
+    boolean | null
+  >(null);
+  const [speechOutputAvailable, setSpeechOutputAvailable] =
+    useState(false);
+  const [voiceConsent, setVoiceConsent] = useState(false);
+  const [isListening, setIsListening] = useState(false);
+  const [speechStatus, setSpeechStatus] = useState("");
+  const [speakResponses, setSpeakResponses] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
 
   const triggerRef = useRef<HTMLButtonElement | null>(null);
   const dialogRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const recognitionRef = useRef<BrowserSpeechRecognition | null>(null);
+  const speechErrorRef = useRef(false);
   const wasOpenRef = useRef(false);
 
   const closePalette = useCallback(() => {
-    setOpen(false);
-  }, []);
+    const recognition = recognitionRef.current;
 
-  useEffect(() => {
-    function handleGlobalKeyDown(event: KeyboardEvent) {
-      if (
-        (event.ctrlKey || event.metaKey) &&
-        event.key.toLowerCase() === "k"
-      ) {
-        event.preventDefault();
-        setOpen((current) => !current);
-      }
-
-      if (event.key === "Escape") {
-        setOpen(false);
+    if (recognition) {
+      try {
+        recognition.stop();
+      } catch {
+        recognitionRef.current = null;
+        setIsListening(false);
       }
     }
 
-    window.addEventListener("keydown", handleGlobalKeyDown);
-
-    return () => {
-      window.removeEventListener("keydown", handleGlobalKeyDown);
-    };
+    setOpen(false);
   }, []);
 
-  useEffect(() => {
-    if (!open) {
-      if (wasOpenRef.current) {
-        triggerRef.current?.focus();
-        wasOpenRef.current = false;
-      }
+  function stopListening() {
+    const recognition = recognitionRef.current;
 
+    if (!recognition) {
+      setIsListening(false);
       return;
     }
 
-    wasOpenRef.current = true;
+    try {
+      recognition.stop();
+    } catch {
+      recognitionRef.current = null;
+      setIsListening(false);
+      setSpeechStatus(
+        "Listening stopped. Review the transcript before running it."
+      );
+    }
+  }
+
+  function stopSpokenResponse() {
+    if ("speechSynthesis" in window) {
+      window.speechSynthesis.cancel();
+    }
+
+    setIsSpeaking(false);
+  }
+
+  function speakMessage(message: string) {
+    if (!speakResponses) return;
+
+    if (
+      !("speechSynthesis" in window) ||
+      typeof SpeechSynthesisUtterance === "undefined"
+    ) {
+      setSpeechStatus(
+        "Spoken feedback is unavailable in this browser. The text response is still available."
+      );
+      return;
+    }
+
+    window.speechSynthesis.cancel();
+
+    const utterance = new SpeechSynthesisUtterance(message);
+    utterance.lang = "en-US";
+    utterance.rate = 1;
+
+    utterance.onstart = () => setIsSpeaking(true);
+    utterance.onend = () => setIsSpeaking(false);
+    utterance.onerror = () => setIsSpeaking(false);
+
+    setIsSpeaking(true);
+    window.speechSynthesis.speak(utterance);
+  }
+
+  function startListening() {
+    if (!voiceConsent) {
+      setSpeechStatus(
+        "Review and accept the speech-processing notice before starting voice input."
+      );
+      return;
+    }
+
+    const Recognition = getRecognitionConstructor();
+
+    if (!Recognition) {
+      setRecognitionAvailable(false);
+      setSpeechStatus(
+        "Voice recognition is not supported here. You can still type commands normally."
+      );
+      return;
+    }
+
+    if (recognitionRef.current) {
+      setSpeechStatus(
+        "A voice-recognition session is already active."
+      );
+      return;
+    }
+
+    speechErrorRef.current = false;
     setResult(null);
+    setSpeechStatus("Starting voice recognition…");
 
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    inputRef.current?.focus();
+    try {
+      const recognition = new Recognition();
 
-    return () => {
-      document.body.style.overflow = previousOverflow;
-    };
-  }, [open]);
+      recognition.lang = "en-US";
+      recognition.continuous = false;
+      recognition.interimResults = true;
+      recognition.maxAlternatives = 1;
 
-  useEffect(() => {
-    setOpen(false);
-  }, [pathname]);
+      recognition.onstart = () => {
+        speechErrorRef.current = false;
+        setIsListening(true);
+        setSpeechStatus(
+          "Listening. Speak a command, then review the transcript."
+        );
+      };
+
+      recognition.onresult = (event) => {
+        const transcriptParts: string[] = [];
+        let hasInterimText = false;
+
+        for (let index = 0; index < event.results.length; index += 1) {
+          const currentResult = event.results[index];
+          const alternative = currentResult?.[0];
+
+          if (!alternative) continue;
+
+          const transcript = alternative.transcript.trim();
+
+          if (transcript) {
+            transcriptParts.push(transcript);
+          }
+
+          if (!currentResult.isFinal) {
+            hasInterimText = true;
+          }
+        }
+
+        const transcript = transcriptParts.join(" ").trim();
+
+        if (transcript) {
+          setInput(transcript);
+          setResult(null);
+          setSpeechStatus(
+            hasInterimText
+              ? "Transcribing live. The text remains editable."
+              : "Transcript captured. Review or edit it before running the command."
+          );
+        }
+      };
+
+      recognition.onerror = (event) => {
+        speechErrorRef.current = true;
+        setIsListening(false);
+        setSpeechStatus(getRecognitionErrorMessage(event.error));
+      };
+
+      recognition.onend = () => {
+        if (recognitionRef.current === recognition) {
+          recognitionRef.current = null;
+        }
+
+        setIsListening(false);
+
+        if (!speechErrorRef.current) {
+          setSpeechStatus((current) =>
+            current.startsWith("Transcript captured") ||
+            current.startsWith("Transcribing live")
+              ? current
+              : "Listening stopped. Review the transcript before running it."
+          );
+        }
+      };
+
+      recognitionRef.current = recognition;
+      recognition.start();
+    } catch {
+      recognitionRef.current = null;
+      setIsListening(false);
+      setSpeechStatus(
+        "The browser could not start speech recognition. Check microphone access or type the command."
+      );
+    }
+  }
 
   function runCommand(command: string) {
+    if (isListening) {
+      stopListening();
+      setSpeechStatus(
+        "Voice capture stopped. Review the transcript, then run the command again."
+      );
+      return;
+    }
+
     const dispatchResult = dispatchCommand(command, {
       navigate: (href) => router.push(href),
       setTheme: applyTheme
     });
 
     setResult(dispatchResult);
+    speakMessage(dispatchResult.message);
 
     if (
       dispatchResult.status === "success" &&
@@ -143,14 +372,103 @@ export default function CommandPalette() {
     }
   }
 
+  useEffect(() => {
+    setRecognitionAvailable(Boolean(getRecognitionConstructor()));
+
+    setSpeechOutputAvailable(
+      "speechSynthesis" in window &&
+        typeof SpeechSynthesisUtterance !== "undefined"
+    );
+  }, []);
+
+  useEffect(() => {
+    function handleGlobalKeyDown(event: KeyboardEvent) {
+      if (
+        (event.ctrlKey || event.metaKey) &&
+        event.key.toLowerCase() === "k"
+      ) {
+        event.preventDefault();
+
+        if (open) {
+          closePalette();
+        } else {
+          setResult(null);
+          setOpen(true);
+        }
+      }
+
+      if (event.key === "Escape" && open) {
+        closePalette();
+      }
+    }
+
+    window.addEventListener("keydown", handleGlobalKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleGlobalKeyDown);
+    };
+  }, [open, closePalette]);
+
+  useEffect(() => {
+    closePalette();
+  }, [pathname, closePalette]);
+
+  useEffect(() => {
+    if (!open) {
+      if (wasOpenRef.current) {
+        triggerRef.current?.focus();
+        wasOpenRef.current = false;
+      }
+
+      return;
+    }
+
+    wasOpenRef.current = true;
+    setResult(null);
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    inputRef.current?.focus();
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [open]);
+
+  useEffect(() => {
+    return () => {
+      const recognition = recognitionRef.current;
+
+      if (recognition) {
+        recognition.onend = null;
+        recognition.onresult = null;
+        recognition.onerror = null;
+
+        try {
+          recognition.abort();
+        } catch {
+          // The recognition session may already have ended.
+        }
+      }
+
+      if ("speechSynthesis" in window) {
+        window.speechSynthesis.cancel();
+      }
+    };
+  }, []);
+
   return (
     <>
       <button
         ref={triggerRef}
         type="button"
         onClick={() => {
-          setResult(null);
-          setOpen(true);
+          if (open) {
+            closePalette();
+          } else {
+            setResult(null);
+            setOpen(true);
+          }
         }}
         aria-label="Open command palette"
         aria-haspopup="dialog"
@@ -166,7 +484,7 @@ export default function CommandPalette() {
 
       {open && (
         <div
-          className="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto bg-black/45 px-3 py-[8vh] backdrop-blur-[2px] sm:px-6 sm:py-[12vh]"
+          className="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto bg-black/45 px-3 py-[6vh] backdrop-blur-[2px] sm:px-6 sm:py-[9vh]"
           onMouseDown={(event) => {
             if (event.target === event.currentTarget) {
               closePalette();
@@ -200,7 +518,7 @@ export default function CommandPalette() {
                   id="command-palette-description"
                   className="mt-3 max-w-lg text-sm leading-7 text-[var(--muted)]"
                 >
-                  Enter a supported command. Actions are selected from
+                  Enter a supported command by typing or voice. Actions use
                   explicit rules; unrecognized input will not be guessed.
                 </p>
               </div>
@@ -261,6 +579,214 @@ export default function CommandPalette() {
               </p>
             </form>
 
+            <section
+              aria-labelledby="voice-input-heading"
+              className="border-t border-[var(--line)] p-5 sm:p-6"
+            >
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--accent)]">
+                    Voice / Input
+                  </p>
+
+                  <h3
+                    id="voice-input-heading"
+                    className="mt-2 text-lg font-semibold tracking-[-0.035em]"
+                  >
+                    Speak a command.
+                  </h3>
+
+                  <p className="mt-2 max-w-lg text-sm leading-7 text-[var(--muted)]">
+                    Listening is started manually. The transcript appears
+                    in the editable command field; it is never executed
+                    automatically.
+                  </p>
+                </div>
+
+                <span
+                  className={`inline-flex w-fit items-center gap-2 border px-3 py-2 text-xs ${
+                    isListening
+                      ? "border-[var(--accent)] text-[var(--accent)]"
+                      : "border-[var(--line)] text-[var(--muted)]"
+                  }`}
+                >
+                  <span
+                    aria-hidden="true"
+                    className={`h-2 w-2 rounded-full ${
+                      isListening
+                        ? "motion-pulse bg-[var(--accent)]"
+                        : "bg-[var(--line)]"
+                    }`}
+                  />
+                  {isListening ? "Listening" : "Microphone inactive"}
+                </span>
+              </div>
+
+              <div className="mt-5 border border-[var(--line)] p-4">
+                <label className="flex items-start gap-3 text-sm leading-6">
+                  <input
+                    type="checkbox"
+                    checked={voiceConsent}
+                    onChange={(event) => {
+                      const checked = event.target.checked;
+
+                      setVoiceConsent(checked);
+                      setSpeechStatus(
+                        checked
+                          ? "Voice input is enabled for manual use. Start listening when ready."
+                          : "Voice input is off until you accept the speech-processing notice."
+                      );
+
+                      if (!checked && isListening) {
+                        stopListening();
+                      }
+                    }}
+                    className="mt-1 h-4 w-4 shrink-0 accent-[var(--accent)]"
+                  />
+
+                  <span>
+                    <span className="font-medium text-[var(--foreground)]">
+                      I understand speech may be processed by my browser&apos;s
+                      recognition provider.
+                    </span>
+
+                    <span className="mt-1 block text-xs leading-6 text-[var(--muted)]">
+                      The browser implementation may send audio to a remote
+                      service. This site does not upload microphone audio to
+                      its own backend. Voice input remains optional.
+                    </span>
+                  </span>
+                </label>
+              </div>
+
+              <div className="mt-4 flex flex-wrap gap-3">
+                <button
+                  type="button"
+                  disabled={
+                    recognitionAvailable !== true ||
+                    (!voiceConsent && !isListening)
+                  }
+                  onClick={() => {
+                    if (isListening) {
+                      stopListening();
+                    } else {
+                      startListening();
+                    }
+                  }}
+                  className={`inline-flex min-h-12 items-center justify-center gap-3 border px-5 py-3 text-sm font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-45 ${
+                    isListening
+                      ? "border-[var(--accent)] text-[var(--accent)]"
+                      : "border-[var(--line)] hover:border-[var(--accent)] hover:text-[var(--accent)]"
+                  }`}
+                >
+                  <span aria-hidden="true">
+                    {isListening ? "■" : "●"}
+                  </span>
+                  {isListening ? "Stop listening" : "Start voice input"}
+                </button>
+
+                {isListening && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      stopListening();
+                      setSpeechStatus(
+                        "Listening stopped. Review the transcript before running it."
+                      );
+                    }}
+                    className="inline-flex min-h-12 items-center justify-center border border-[var(--line)] px-4 py-3 text-sm text-[var(--muted)] hover:text-[var(--foreground)]"
+                  >
+                    Finish capture
+                  </button>
+                )}
+              </div>
+
+              <p
+                role="status"
+                aria-live="polite"
+                aria-atomic="true"
+                className="mt-4 text-sm leading-7 text-[var(--muted)]"
+              >
+                {recognitionAvailable === null
+                  ? "Checking browser voice support…"
+                  : recognitionAvailable
+                    ? speechStatus ||
+                      "Voice input is ready when you accept the notice and start it."
+                    : "This browser does not expose a supported speech-recognition API. Typing still works normally."}
+              </p>
+
+              {recognitionAvailable === false && (
+                <p className="mt-2 text-xs leading-6 text-[var(--muted)]">
+                  For the best experience, use a supported browser with
+                  microphone permission enabled.
+                </p>
+              )}
+            </section>
+
+            <section
+              aria-labelledby="voice-output-heading"
+              className="border-t border-[var(--line)] p-5 sm:p-6"
+            >
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--accent)]">
+                    Voice / Output
+                  </p>
+
+                  <h3
+                    id="voice-output-heading"
+                    className="mt-2 text-lg font-semibold tracking-[-0.035em]"
+                  >
+                    Hear command responses.
+                  </h3>
+
+                  <p className="mt-2 max-w-lg text-sm leading-7 text-[var(--muted)]">
+                    Spoken feedback is optional. When enabled, the browser
+                    reads the command result aloud.
+                  </p>
+                </div>
+
+                {isSpeaking && (
+                  <button
+                    type="button"
+                    onClick={stopSpokenResponse}
+                    className="inline-flex min-h-10 w-fit items-center justify-center border border-[var(--line)] px-3 py-2 text-xs font-medium hover:border-[var(--accent)] hover:text-[var(--accent)]"
+                  >
+                    Stop speech
+                  </button>
+                )}
+              </div>
+
+              <label className="mt-4 flex items-start gap-3 text-sm leading-6">
+                <input
+                  type="checkbox"
+                  checked={speakResponses}
+                  disabled={!speechOutputAvailable}
+                  onChange={(event) => {
+                    const checked = event.target.checked;
+                    setSpeakResponses(checked);
+
+                    if (!checked) {
+                      stopSpokenResponse();
+                    }
+                  }}
+                  className="mt-1 h-4 w-4 shrink-0 accent-[var(--accent)]"
+                />
+
+                <span>
+                  <span className="font-medium">
+                    Speak command responses
+                  </span>
+
+                  <span className="mt-1 block text-xs leading-6 text-[var(--muted)]">
+                    {speechOutputAvailable
+                      ? "Uses the browser's speech-synthesis feature. No spoken response is played unless you enable this setting."
+                      : "Speech synthesis is unavailable in this browser."}
+                  </span>
+                </span>
+              </label>
+            </section>
+
             {result && (
               <div
                 role="status"
@@ -288,7 +814,7 @@ export default function CommandPalette() {
               </div>
             )}
 
-            <div className="border-t border-[var(--line)] p-5 sm:p-6">
+            <section className="border-t border-[var(--line)] p-5 sm:p-6">
               <div className="flex items-center justify-between gap-4">
                 <h3 className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">
                   Example commands
@@ -309,6 +835,7 @@ export default function CommandPalette() {
                       <p className="break-words font-mono text-sm">
                         {example.command}
                       </p>
+
                       <p className="mt-1 text-xs leading-5 text-[var(--muted)]">
                         {example.description}
                       </p>
@@ -330,11 +857,10 @@ export default function CommandPalette() {
               </div>
 
               <p className="mt-5 border-t border-[var(--line)] pt-4 text-xs leading-6 text-[var(--muted)]">
-                This is the typed-command foundation. Voice input and the
-                interactive command lab will use the same engine in later
-                steps.
+                Typed commands, recognized speech, and the future interaction
+                laboratory all use the same deterministic command engine.
               </p>
-            </div>
+            </section>
           </div>
         </div>
       )}
