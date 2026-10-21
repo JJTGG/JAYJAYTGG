@@ -2,10 +2,12 @@
 
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import CommandPalette from "./CommandPalette";
 
 type Theme = "light" | "dark" | "system";
 
 const THEME_STORAGE_KEY = "jayjaytgg-theme";
+const THEME_CHANGE_EVENT = "jayjaytgg:theme-change";
 
 const navigation = [
   { label: "Projects", href: "/work" },
@@ -21,20 +23,37 @@ function isActiveRoute(pathname: string, href: string) {
   return href !== "/" && pathname.startsWith(`${href}/`);
 }
 
+function readCurrentTheme(): Theme {
+  const current = document.documentElement.dataset.theme;
+
+  if (current === "light" || current === "dark") {
+    return current;
+  }
+
+  return "system";
+}
+
 export default function Header() {
   const [open, setOpen] = useState(false);
   const [theme, setTheme] = useState<Theme>("system");
   const pathname = usePathname();
 
   useEffect(() => {
-    const current = document.documentElement.dataset.theme;
-
-    if (current === "light" || current === "dark") {
-      setTheme(current);
-    } else {
-      setTheme("system");
+    function syncTheme() {
+      setTheme(readCurrentTheme());
     }
+
+    syncTheme();
+    window.addEventListener(THEME_CHANGE_EVENT, syncTheme);
+
+    return () => {
+      window.removeEventListener(THEME_CHANGE_EVENT, syncTheme);
+    };
   }, []);
+
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
 
   function cycleTheme() {
     const nextTheme: Theme =
@@ -52,12 +71,14 @@ export default function Header() {
     } catch {
       // Keep the selected theme for the current page session.
     }
+
+    window.dispatchEvent(new Event(THEME_CHANGE_EVENT));
   }
 
   return (
     <header className="border-b border-[var(--line)] bg-[var(--background)]">
       <div className="mx-auto w-full max-w-[var(--page-width)] px-[var(--page-gutter)]">
-        <div className="flex min-h-[76px] items-center justify-between gap-4">
+        <div className="flex min-h-[76px] items-center justify-between gap-3 sm:gap-4">
           <a
             href="/"
             className="group flex shrink-0 flex-col leading-tight"
@@ -97,12 +118,14 @@ export default function Header() {
           </nav>
 
           <div className="flex shrink-0 items-center gap-2">
+            <CommandPalette />
+
             <button
               type="button"
               onClick={cycleTheme}
               title={`Current theme: ${theme}. Activate to change theme.`}
               aria-label={`Theme: ${theme}. Activate to change theme.`}
-              className="inline-flex min-h-10 items-center gap-2 rounded-md border border-[var(--line)] bg-[var(--surface)] px-3 py-2 text-xs font-medium text-[var(--foreground)] transition-colors hover:border-[var(--accent)]"
+              className="inline-flex min-h-10 items-center gap-2 rounded-md border border-[var(--line)] bg-[var(--surface)] px-2.5 py-2 text-xs font-medium text-[var(--foreground)] transition-colors hover:border-[var(--accent)] sm:px-3"
             >
               <svg
                 aria-hidden="true"
@@ -129,13 +152,13 @@ export default function Header() {
                 )}
               </svg>
 
-              <span className="capitalize">{theme}</span>
+              <span className="hidden capitalize sm:inline">{theme}</span>
             </button>
 
             <button
               type="button"
               onClick={() => setOpen((current) => !current)}
-              className="inline-flex min-h-10 items-center justify-center rounded-md border border-[var(--line)] px-3 py-2 text-sm font-medium text-[var(--foreground)] transition-colors hover:border-[var(--accent)] md:hidden"
+              className="inline-flex min-h-10 items-center justify-center rounded-md border border-[var(--line)] px-2.5 py-2 text-sm font-medium text-[var(--foreground)] transition-colors hover:border-[var(--accent)] md:hidden sm:px-3"
               aria-expanded={open}
               aria-controls="mobile-navigation"
               aria-label={open ? "Close navigation" : "Open navigation"}
