@@ -76,7 +76,7 @@ const stages: IdeaStage[] = [
   }
 ];
 
-const LOOP_INTERVAL_MS = 3000;
+const LOOP_INTERVAL_MS = 3200;
 
 function getLetterTransform(
   mode: StageMode,
@@ -117,7 +117,7 @@ function StageGraphic({ mode }: { mode: StageMode }) {
   switch (mode) {
     case "idea":
       return (
-        <div className="flex min-h-12 items-center justify-center gap-3">
+        <div className="flex min-h-10 items-center justify-center gap-3">
           <span className="h-2 w-2 rounded-full bg-[var(--accent)] motion-pulse" />
           <span className="h-px w-8 bg-[var(--line)]" />
           <span className="text-[10px] uppercase tracking-[0.2em] text-[var(--muted)]">
@@ -130,7 +130,7 @@ function StageGraphic({ mode }: { mode: StageMode }) {
 
     case "question":
       return (
-        <div className="flex min-h-12 items-center justify-center gap-4">
+        <div className="flex min-h-10 items-center justify-center gap-4">
           <span className="h-5 w-5 rounded-full border border-[var(--line)]" />
           <span className="text-3xl font-semibold leading-none text-[var(--accent)]">
             ?
@@ -164,7 +164,7 @@ function StageGraphic({ mode }: { mode: StageMode }) {
 
     case "direction":
       return (
-        <div className="flex min-h-12 items-center justify-center gap-3">
+        <div className="flex min-h-10 items-center justify-center gap-3">
           {["A", "B", "C"].map((option, index) => (
             <div key={option} className="flex items-center gap-3">
               <span
@@ -177,7 +177,10 @@ function StageGraphic({ mode }: { mode: StageMode }) {
                 {option}
               </span>
               {index < 2 && (
-                <span className="text-xs text-[var(--muted)]" aria-hidden="true">
+                <span
+                  className="text-xs text-[var(--muted)]"
+                  aria-hidden="true"
+                >
                   →
                 </span>
               )}
@@ -218,6 +221,7 @@ function StageGraphic({ mode }: { mode: StageMode }) {
               <div className="h-2 w-3/4 rounded-sm bg-[var(--line)]" />
               <div className="h-2 w-1/2 rounded-sm bg-[var(--line)]" />
             </div>
+
             <div className="flex items-center justify-center rounded-md border border-[var(--accent)] p-2 text-[10px] font-medium">
               Test the idea ↗
             </div>
@@ -254,8 +258,12 @@ function StageGraphic({ mode }: { mode: StageMode }) {
               >
                 {item}
               </span>
+
               {index < 2 && (
-                <span className="text-xs text-[var(--muted)]" aria-hidden="true">
+                <span
+                  className="text-xs text-[var(--muted)]"
+                  aria-hidden="true"
+                >
                   →
                 </span>
               )}
@@ -270,9 +278,10 @@ function StageGraphic({ mode }: { mode: StageMode }) {
 }
 
 export default function IdeaEvolution() {
+  const [isExpanded, setIsExpanded] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
-  const [reducedMotion, setReducedMotion] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState<boolean | null>(null);
 
   const activeStage = stages[activeIndex];
 
@@ -298,96 +307,166 @@ export default function IdeaEvolution() {
   }, []);
 
   useEffect(() => {
-    if (!isPlaying || reducedMotion) return;
+    if (!isExpanded || !isPlaying || reducedMotion !== false) {
+      return;
+    }
 
     const timer = window.setInterval(() => {
+      if (document.visibilityState !== "visible") {
+        return;
+      }
+
       setActiveIndex((current) => (current + 1) % stages.length);
     }, LOOP_INTERVAL_MS);
 
     return () => window.clearInterval(timer);
-  }, [isPlaying, reducedMotion]);
+  }, [isExpanded, isPlaying, reducedMotion]);
+
+  function previousStage() {
+    setActiveIndex((current) => (current - 1 + stages.length) % stages.length);
+  }
+
+  function nextStage() {
+    setActiveIndex((current) => (current + 1) % stages.length);
+  }
+
+  const panelBackground = {
+    backgroundColor: "color-mix(in srgb, var(--background) 90%, transparent)",
+    backdropFilter: "blur(12px)"
+  };
 
   return (
-    <section
-      aria-label="The evolution of an idea"
-      className="relative isolate overflow-hidden rounded-xl border border-[var(--line)] bg-[var(--surface)] p-4 sm:p-5"
-    >
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 -z-10 opacity-40"
-        style={{
-          backgroundImage:
-            "linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px)",
-          backgroundSize: "28px 28px",
-          maskImage:
-            "linear-gradient(to bottom, transparent, black 20%, black 80%, transparent)"
-        }}
-      />
+    <div className="pointer-events-none fixed bottom-4 right-4 z-50 sm:bottom-6 sm:right-6">
+      <aside
+        id="idea-evolution-panel"
+        aria-label="Idea evolution sequence"
+        hidden={!isExpanded}
+        className={`pointer-events-auto mb-3 w-[min(19rem,calc(100vw-2rem))] border-l-2 border-[var(--accent)] py-3 pl-4 pr-3 text-[var(--foreground)] ${
+          isExpanded ? "block" : "hidden"
+        }`}
+        style={panelBackground}
+      >
+        <div className="flex items-center justify-between gap-4">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">
+            An idea in motion
+          </p>
 
-      <div className="flex items-center gap-2">
-        <span className="h-2 w-2 rounded-full bg-[var(--accent)] motion-pulse" />
-        <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">
-          An idea in motion
-        </p>
-      </div>
-
-      <div className="py-5 sm:py-6">
-        <h2
-          key={activeStage.id}
-          className="motion-fade-up flex min-h-10 items-center justify-center overflow-hidden text-center text-[clamp(1.35rem,4.4vw,3rem)] font-semibold leading-tight tracking-[-0.07em]"
-        >
-          <span className="sr-only">{activeStage.word}</span>
-          <span aria-hidden="true" className="kinetic-word">
-            {activeStage.word.split("").map((letter, index) => (
-              <span
-                key={`${activeStage.id}-${index}`}
-                className="kinetic-letter"
-                style={{
-                  transform: getLetterTransform(
-                    activeStage.mode,
-                    index,
-                    activeStage.word.length
-                  ),
-                  animationDelay: `${Math.min(index * 18, 180)}ms`
-                }}
-              >
-                {letter}
-              </span>
-            ))}
+          <span className="font-mono text-[10px] text-[var(--muted)]">
+            {String(activeIndex + 1).padStart(2, "0")} /{" "}
+            {String(stages.length).padStart(2, "0")}
           </span>
-        </h2>
-
-        <p
-          key={`${activeStage.id}-description`}
-          className="motion-fade-in mt-2 min-h-5 text-center text-xs leading-5 text-[var(--muted)]"
-          aria-live="off"
-        >
-          {activeStage.description}
-        </p>
-
-        <div key={`${activeStage.id}-graphic`} className="motion-fade-up mt-4">
-          <StageGraphic mode={activeStage.mode} />
         </div>
-      </div>
 
-      <div className="flex items-center justify-between gap-3 border-t border-[var(--line)] pt-3">
-        <p className="text-[10px] text-[var(--muted)]">
-          {reducedMotion
-            ? "Automatic motion is disabled."
-            : isPlaying
-              ? "An idea, taking shape."
-              : "The sequence is paused."}
-        </p>
+        <div className="py-4">
+          <h2
+            key={activeStage.id}
+            className="motion-fade-up max-w-full overflow-hidden text-[clamp(1.3rem,6vw,2rem)] font-semibold leading-tight tracking-[-0.07em]"
+            aria-live={reducedMotion ? "polite" : "off"}
+          >
+            <span className="sr-only">{activeStage.word}</span>
 
-        <button
-          type="button"
-          onClick={() => setIsPlaying((playing) => !playing)}
-          disabled={reducedMotion}
-          className="motion-lift min-h-9 shrink-0 rounded-md border border-[var(--line)] px-3 py-2 text-xs font-medium transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)] disabled:cursor-not-allowed disabled:opacity-60"
-        >
-          {isPlaying ? "Pause sequence" : "Resume sequence"}
-        </button>
-      </div>
-    </section>
+            <span aria-hidden="true" className="kinetic-word">
+              {activeStage.word.split("").map((letter, index) => (
+                <span
+                  key={`${activeStage.id}-${index}`}
+                  className="kinetic-letter"
+                  style={{
+                    transform: reducedMotion
+                      ? "none"
+                      : getLetterTransform(
+                          activeStage.mode,
+                          index,
+                          activeStage.word.length
+                        ),
+                    animationDelay: reducedMotion
+                      ? "0ms"
+                      : `${Math.min(index * 18, 180)}ms`
+                  }}
+                >
+                  {letter}
+                </span>
+              ))}
+            </span>
+          </h2>
+
+          <p
+            key={`${activeStage.id}-description`}
+            className="motion-fade-in mt-2 text-xs leading-5 text-[var(--muted)]"
+          >
+            {activeStage.description}
+          </p>
+
+          <div
+            key={`${activeStage.id}-graphic`}
+            className="motion-fade-up mt-4"
+            aria-hidden="true"
+          >
+            <StageGraphic mode={activeStage.mode} />
+          </div>
+        </div>
+
+        <div className="border-t border-[var(--line)] pt-3">
+          <p className="mb-3 text-[10px] text-[var(--muted)]">
+            {reducedMotion === null
+              ? "Reading motion preference…"
+              : reducedMotion
+                ? "Manual mode · reduced motion"
+                : isPlaying
+                  ? "Sequence advancing"
+                  : "Sequence paused"}
+          </p>
+
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-3">
+            <button
+              type="button"
+              onClick={previousStage}
+              className="min-h-9 text-xs font-medium text-[var(--foreground)] underline decoration-[var(--line)] underline-offset-4 hover:text-[var(--accent)] focus-visible:text-[var(--accent)]"
+              aria-label="Previous idea stage"
+            >
+              ← Previous
+            </button>
+
+            {reducedMotion === false && (
+              <button
+                type="button"
+                onClick={() => setIsPlaying((playing) => !playing)}
+                className="min-h-9 text-xs font-medium text-[var(--accent)] underline decoration-[var(--line)] underline-offset-4 hover:decoration-[var(--accent)]"
+              >
+                {isPlaying ? "Pause" : "Resume"}
+              </button>
+            )}
+
+            <button
+              type="button"
+              onClick={nextStage}
+              className="min-h-9 text-xs font-medium text-[var(--foreground)] underline decoration-[var(--line)] underline-offset-4 hover:text-[var(--accent)] focus-visible:text-[var(--accent)]"
+              aria-label="Next idea stage"
+            >
+              Next →
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      <button
+        type="button"
+        onClick={() => setIsExpanded((expanded) => !expanded)}
+        aria-expanded={isExpanded}
+        aria-controls="idea-evolution-panel"
+        className="pointer-events-auto flex min-h-10 items-center gap-2 border-l-2 border-[var(--accent)] px-3 py-2 text-left text-xs font-medium text-[var(--foreground)] transition-colors hover:text-[var(--accent)] focus-visible:text-[var(--accent)]"
+        style={panelBackground}
+      >
+        <span
+          aria-hidden="true"
+          className="motion-pulse h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--accent)]"
+        />
+
+        <span>{isExpanded ? "Close idea sequence" : "Idea in motion"}</span>
+
+        <span aria-hidden="true" className="ml-1 text-[var(--muted)]">
+          {isExpanded ? "−" : "↗"}
+        </span>
+      </button>
+    </div>
   );
 }
