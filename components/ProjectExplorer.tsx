@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from "next/link";
@@ -138,7 +137,9 @@ export default function ProjectExplorer({
         <div className="min-w-0">
           <div className="flex items-center justify-between gap-3 pb-3">
             <h2 className="text-sm font-semibold">Project index</h2>
-            <span className="text-xs text-[var(--muted)]">Select to inspect</span>
+            <span className="text-xs text-[var(--muted)]">
+              Select to inspect
+            </span>
           </div>
 
           {filteredProjects.length > 0 ? (
@@ -153,7 +154,9 @@ export default function ProjectExplorer({
                       aria-pressed={active}
                       onClick={() => setSelectedSlug(project.slug)}
                       className={`w-full rounded-lg p-4 text-left transition-colors ${
-                        active ? "bg-[var(--surface)]" : "hover:bg-[var(--surface)]"
+                        active
+                          ? "bg-[var(--surface)]"
+                          : "hover:bg-[var(--surface)]"
                       }`}
                     >
                       <div className="flex items-start gap-3">
@@ -170,7 +173,9 @@ export default function ProjectExplorer({
                             <span
                               aria-hidden="true"
                               className={`text-sm ${
-                                active ? "text-[var(--accent)]" : "text-[var(--muted)]"
+                                active
+                                  ? "text-[var(--accent)]"
+                                  : "text-[var(--muted)]"
                               }`}
                             >
                               {active ? "●" : "↗"}
@@ -282,7 +287,10 @@ export default function ProjectExplorer({
                 </div>
               </div>
 
-              <ProjectShowcase project={selectedProject} />
+              <ProjectShowcase
+                key={selectedProject.slug}
+                project={selectedProject}
+              />
             </div>
           ) : (
             <div className="flex min-h-[360px] flex-col items-center justify-center rounded-xl border border-dashed border-[var(--line)] px-6 py-12 text-center sm:min-h-[480px]">
