@@ -1,0 +1,13 @@
+$schema: https://api.gitbook.com/gitbook-docs.yaml
+version: 1
+
+site:
+  title: JAYJAYTGG
+  structure:
+    - type: space
+      key: space-jayjaytgg
+      title: JAYJAYTGG
+      path: jayjaytgg
+      default: true
+      content:
+        directory: ./
