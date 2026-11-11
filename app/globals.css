@@ -1,94 +1,176 @@
 @import "tailwindcss";
 
+@theme inline {
+  --font-sans: var(--font-body);
+  --font-display: var(--font-heading);
+  --font-mono: var(--font-code);
+}
+
+/* --------------------------------------------------
+   DESIGN TOKENS — LIGHT THEME
+   -------------------------------------------------- */
+
 :root {
   color-scheme: light;
 
-  /* Core palette — light theme */
-  --background: #F5F4EF;
+  /* Core surfaces */
+  --background: #F6F5F1;
   --surface: #FFFFFF;
-  --foreground: #171918;
-  --muted: #555A61;
-  --line: #D9D8D1;
+  --surface-subtle: #EEEDE7;
+
+  /* Text */
+  --foreground: #171815;
+  --muted: #5A5D56;
+
+  /* Borders */
+  --line: #DAD9D2;
 
   /* Brand accent */
-  --accent: #1746D1;
-  --accent-strong: #1038AB;
-  --focus-ring: #1746D1;
+  --accent: #2457A6;
+  --accent-strong: #1D4788;
+  --accent-soft: #E7EDF6;
 
-  /* Selection */
-  --selection-background: #DDE6FF;
-  --selection-foreground: #171918;
+  /* Accessibility */
+  --focus-ring: #2457A6;
+  --selection-background: #DCE6F5;
+  --selection-foreground: #171815;
 
   /* Typography */
-  --font-sans: Inter, ui-sans-serif, system-ui, -apple-system,
-    BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono",
-    monospace;
+  --font-body: var(--font-inter), ui-sans-serif, system-ui,
+    -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
-  /* Layout foundations */
+  --font-heading: var(--font-space-grotesk), ui-sans-serif,
+    system-ui, sans-serif;
+
+  --font-code: var(--font-ibm-plex-mono), "SFMono-Regular",
+    Consolas, "Liberation Mono", monospace;
+
+  /* Content and layout */
   --page-width: 1240px;
-  --page-gutter: clamp(1.25rem, 5vw, 3.5rem);
-  --section-space: clamp(4.5rem, 10vw, 8rem);
+  --page-gutter: 20px;
+  --reading-width: 68ch;
+  --section-space: clamp(4rem, 8vw, 7rem);
 
-  /* Motion timing */
-  --motion-fast: 140ms;
+  /* Geometry */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 999px;
+
+  /* Surface elevation */
+  --shadow-subtle: 0 4px 16px rgb(23 24 21 / 5%);
+
+  /* Motion */
+  --motion-fast: 120ms;
   --motion-normal: 180ms;
-  --motion-medium: 420ms;
-  --motion-slow: 680ms;
+  --motion-slow: 320ms;
 
   /* Motion curves */
   --ease-standard: cubic-bezier(0.2, 0, 0, 1);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* Explicit dark theme */
+/* --------------------------------------------------
+   DESIGN TOKENS — DARK THEME
+   -------------------------------------------------- */
+
 :root[data-theme="dark"] {
   color-scheme: dark;
 
-  --background: #101216;
-  --surface: #171A20;
-  --foreground: #F2F4F7;
-  --muted: #A4A9B4;
-  --line: #2C3039;
+  --background: #151613;
+  --surface: #1E201C;
+  --surface-subtle: #252720;
 
-  --accent: #8DA8FF;
-  --accent-strong: #B2C4FF;
-  --focus-ring: #8DA8FF;
+  --foreground: #F3F0E8;
+  --muted: #B3B5AA;
 
-  --selection-background: #263B73;
-  --selection-foreground: #F2F4F7;
+  --line: #3A3C35;
+
+  --accent: #8CB5F0;
+  --accent-strong: #B5D0F5;
+  --accent-soft: #293748;
+
+  --focus-ring: #8CB5F0;
+  --selection-background: #2B3E55;
+  --selection-foreground: #F3F0E8;
+
+  --shadow-subtle: 0 4px 20px rgb(0 0 0 / 16%);
 }
 
-/* Follow device preference unless a theme is explicitly chosen */
+/* --------------------------------------------------
+   SYSTEM THEME
+   Applies when no manual light or dark override exists.
+   -------------------------------------------------- */
+
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]):not([data-theme="dark"]) {
     color-scheme: dark;
 
-    --background: #101216;
-    --surface: #171A20;
-    --foreground: #F2F4F7;
-    --muted: #A4A9B4;
-    --line: #2C3039;
+    --background: #151613;
+    --surface: #1E201C;
+    --surface-subtle: #252720;
 
-    --accent: #8DA8FF;
-    --accent-strong: #B2C4FF;
-    --focus-ring: #8DA8FF;
+    --foreground: #F3F0E8;
+    --muted: #B3B5AA;
 
-    --selection-background: #263B73;
-    --selection-foreground: #F2F4F7;
+    --line: #3A3C35;
+
+    --accent: #8CB5F0;
+    --accent-strong: #B5D0F5;
+    --accent-soft: #293748;
+
+    --focus-ring: #8CB5F0;
+    --selection-background: #2B3E55;
+    --selection-foreground: #F3F0E8;
+
+    --shadow-subtle: 0 4px 20px rgb(0 0 0 / 16%);
   }
 }
 
-/* Base document */
-* {
+/* --------------------------------------------------
+   RESPONSIVE LAYOUT TOKENS
+   -------------------------------------------------- */
+
+@media (min-width: 768px) {
+  :root {
+    --page-gutter: 24px;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --page-gutter: 32px;
+  }
+}
+
+/* --------------------------------------------------
+   DOCUMENT FOUNDATION
+   -------------------------------------------------- */
+
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
 html {
   min-width: 320px;
+  min-height: 100%;
   background: var(--background);
+  color-scheme: light;
   scroll-padding-top: 5rem;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]):not([data-theme="dark"]) {
+    color-scheme: dark;
+  }
 }
 
 body {
@@ -96,18 +178,71 @@ body {
   margin: 0;
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans);
+  font-family: var(--font-body);
   font-size: 16px;
+  font-weight: 400;
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  transition:
+    background-color var(--motion-normal) var(--ease-standard),
+    color var(--motion-normal) var(--ease-standard);
+}
+
+/* --------------------------------------------------
+   TYPOGRAPHY
+   -------------------------------------------------- */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 0;
+  color: var(--foreground);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1.12;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+strong,
+b {
+  font-weight: 600;
+}
+
+small {
+  font-size: 0.875em;
+}
+
+code,
+pre,
+kbd,
+samp {
+  font-family: var(--font-code);
+}
+
+pre {
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 ::selection {
   background: var(--selection-background);
   color: var(--selection-foreground);
 }
+
+/* --------------------------------------------------
+   ELEMENT NORMALISATION
+   -------------------------------------------------- */
 
 a {
   color: inherit;
@@ -127,6 +262,13 @@ button {
   -webkit-tap-highlight-color: transparent;
 }
 
+button:disabled,
+input:disabled,
+textarea:disabled,
+select:disabled {
+  cursor: not-allowed;
+}
+
 img,
 svg,
 video,
@@ -135,43 +277,62 @@ canvas {
   max-width: 100%;
 }
 
-h1,
-h2,
-h3,
-h4 {
-  text-wrap: balance;
+img {
+  height: auto;
 }
+
+fieldset {
+  min-width: 0;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+[id] {
+  scroll-margin-top: 6rem;
+}
+
+/* --------------------------------------------------
+   ACCESSIBILITY FOUNDATION
+   -------------------------------------------------- */
 
 :focus-visible {
   outline: 2px solid var(--focus-ring);
   outline-offset: 4px;
 }
 
+::placeholder {
+  color: var(--muted);
+  opacity: 0.8;
+}
+
+.skip-link {
+  position: absolute;
+  z-index: 1000;
+  top: 12px;
+  left: 12px;
+  padding: 10px 14px;
+  transform: translateY(-160%);
+  border-radius: var(--radius-sm);
+  background: var(--foreground);
+  color: var(--background);
+  font-weight: 600;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
 /* --------------------------------------------------
-   MOTION FOUNDATION
-   Reusable behaviors; applied selectively by components.
+   REUSABLE MOTION FOUNDATION
+
+   Motion is deliberately restrained.
+   Components should use it only when it clarifies
+   a state change or improves interaction feedback.
    -------------------------------------------------- */
 
-/* Signature pulse */
-@keyframes signature-pulse {
-  0%,
-  100% {
-    opacity: 0.7;
-    transform: scale(0.92);
-  }
-
-  50% {
-    opacity: 1;
-    transform: scale(1.12);
-  }
-}
-
-.motion-pulse {
-  transform-origin: center;
-  animation: signature-pulse 2.8s ease-in-out infinite;
-}
-
-/* Gentle appearance */
 @keyframes motion-fade-in {
   from {
     opacity: 0;
@@ -186,11 +347,10 @@ h4 {
   animation: motion-fade-in var(--motion-slow) var(--ease-standard) both;
 }
 
-/* Appearance with a small upward settle */
 @keyframes motion-fade-up {
   from {
     opacity: 0;
-    transform: translate3d(0, 16px, 0);
+    transform: translate3d(0, 8px, 0);
   }
 
   to {
@@ -203,9 +363,9 @@ h4 {
   animation: motion-fade-up var(--motion-slow) var(--ease-out) both;
 }
 
-/* Scroll-reveal transition.
-   Elements stay visible by default, including when JavaScript is unavailable.
-   A component may apply .is-pending after setting up observation. */
+/* Content remains visible unless a component deliberately
+   activates the pending state after preparing an observer. */
+
 .motion-reveal {
   opacity: 1;
   transform: none;
@@ -216,7 +376,7 @@ h4 {
 
 .motion-reveal.is-pending {
   opacity: 0;
-  transform: translate3d(0, 18px, 0);
+  transform: translate3d(0, 8px, 0);
 }
 
 .motion-reveal.is-visible {
@@ -224,67 +384,56 @@ h4 {
   transform: translate3d(0, 0, 0);
 }
 
-/* Optional stagger for a group of related elements */
+/* Small stagger intervals; avoid long cascading animations. */
+
 .motion-stagger > * {
   animation: motion-fade-up var(--motion-slow) var(--ease-out) both;
 }
 
 .motion-stagger > *:nth-child(1) {
-  animation-delay: 40ms;
+  animation-delay: 25ms;
 }
 
 .motion-stagger > *:nth-child(2) {
-  animation-delay: 100ms;
+  animation-delay: 50ms;
 }
 
 .motion-stagger > *:nth-child(3) {
-  animation-delay: 160ms;
+  animation-delay: 75ms;
 }
 
 .motion-stagger > *:nth-child(4) {
-  animation-delay: 220ms;
+  animation-delay: 100ms;
 }
 
 .motion-stagger > *:nth-child(5) {
-  animation-delay: 280ms;
+  animation-delay: 125ms;
 }
 
 .motion-stagger > *:nth-child(n + 6) {
-  animation-delay: 320ms;
+  animation-delay: 150ms;
 }
 
-/* Kinetic typography primitives */
+/* Compatibility classes retained without kinetic movement. */
+
 .kinetic-word {
   display: inline-block;
 }
 
 .kinetic-letter {
   display: inline-block;
-  transform-origin: 50% 85%;
-  transition:
-    transform var(--motion-medium) var(--ease-out),
-    letter-spacing var(--motion-medium) var(--ease-standard);
+  transform: none;
+  transition: none;
 }
 
-.kinetic-word:hover .kinetic-letter:nth-child(3n + 1) {
-  transform: translateY(-0.07em) rotate(-3deg);
-}
+/* Interactive surfaces */
 
-.kinetic-word:hover .kinetic-letter:nth-child(3n + 2) {
-  transform: translateY(0.035em) rotate(2deg);
-}
-
-.kinetic-word:hover .kinetic-letter:nth-child(3n) {
-  transform: translateY(-0.045em) rotate(1deg);
-}
-
-/* Interactive surfaces: movement, visual feedback and tactile press */
 .motion-lift {
   transition:
-    transform var(--motion-medium) var(--ease-out),
+    transform var(--motion-normal) var(--ease-out),
     border-color var(--motion-normal) var(--ease-standard),
     background-color var(--motion-normal) var(--ease-standard),
-    box-shadow var(--motion-medium) var(--ease-standard);
+    box-shadow var(--motion-normal) var(--ease-standard);
 }
 
 .motion-arrow {
@@ -292,52 +441,36 @@ h4 {
   transition: transform var(--motion-normal) var(--ease-out);
 }
 
-/* Hover movement is limited to devices with a precise pointer */
+/* Hover movement only on devices with a precise pointer. */
+
 @media (hover: hover) and (pointer: fine) {
   .motion-lift:hover {
-    transform: translateY(-3px) scale(1.008);
-    box-shadow: 0 10px 26px
-      color-mix(in srgb, var(--foreground) 8%, transparent);
+    transform: translateY(-2px);
   }
 
   a:hover .motion-arrow,
   button:hover .motion-arrow {
-    transform: translate(3px, -2px);
+    transform: translate(2px, -1px);
   }
 }
 
-/* Pressing feels different from hovering */
+/* Press states remain subtle. */
+
 .motion-lift:active {
-  transform: translateY(0) scale(0.985);
-  box-shadow: 0 2px 6px
-    color-mix(in srgb, var(--foreground) 5%, transparent);
+  transform: translateY(0);
   transition-duration: var(--motion-fast);
 }
 
-/* A focused control gives its containing surface feedback */
-.motion-lift:focus-within {
-  box-shadow: 0 0 0 3px
-    color-mix(in srgb, var(--focus-ring) 14%, transparent);
+/* Remove the former decorative pulse behaviour. */
+
+.motion-pulse {
+  animation: none;
 }
 
-/* Global interaction transitions */
-@media (prefers-reduced-motion: no-preference) {
-  html {
-    scroll-behavior: smooth;
-  }
+/* --------------------------------------------------
+   REDUCED MOTION
+   -------------------------------------------------- */
 
-  a,
-  button {
-    transition:
-      color var(--motion-normal) ease,
-      background-color var(--motion-normal) ease,
-      border-color var(--motion-normal) ease,
-      opacity var(--motion-normal) ease,
-      transform var(--motion-normal) ease;
-  }
-}
-
-/* Accessibility: remove decorative motion when requested */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -346,33 +479,25 @@ h4 {
   *,
   *::before,
   *::after {
-    animation: none !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
     transition-delay: 0ms !important;
   }
 
-  .motion-reveal.is-pending {
-    opacity: 1;
-    transform: none;
-  }
-
+  .motion-reveal.is-pending,
   .motion-reveal.is-visible {
     opacity: 1;
-    transform: none;
-  }
-
-  .kinetic-word:hover .kinetic-letter {
     transform: none;
   }
 
   .motion-lift:hover,
   .motion-lift:active {
     transform: none;
-    box-shadow: none;
   }
 
-  .motion-lift:focus-within {
-    box-shadow: none;
+  .kinetic-letter {
+    transform: none;
   }
 }
