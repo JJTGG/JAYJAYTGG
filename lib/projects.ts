@@ -1,5 +1,13 @@
+import { projectRecords } from "./portfolio/projects";
+import type {
+  ProjectCategory,
+  ProjectRecord
+} from "./portfolio/types";
 
-export type PortfolioSection = "featured" | "systems" | "experiments";
+export type PortfolioSection =
+  | "featured"
+  | "systems"
+  | "experiments";
 
 export type Project = {
   name: string;
@@ -16,154 +24,62 @@ export type Project = {
   credit?: string;
 };
 
-export const projects: Project[] = [
-  {
-    name: "Agoré",
-    slug: "agore",
-    type: "Social Platform",
-    description:
-      "A global social platform centred on people, public content, discovery, and private communication. Its public release is out, and the product is still being refined.",
-    shortDescription:
-      "A social platform built around people, content, discovery, and communication.",
-    status: "Launched · Refinement",
-    live: "https://agore.vercel.app/",
-    source: "https://github.com/JJTGG/Agore",
-    category: "system",
-    portfolioSection: "featured",
-    featuredInHub: false
-  },
-  {
-    name: "AI Arena",
-    slug: "ai-arena",
-    type: "AI / Product",
-    description:
-      "A multi-model AI workspace built to let people ask the same question across AI models and compare their responses in one place. The product is evolving as its core experience and longer-term direction take shape.",
-    shortDescription:
-      "One question, multiple AI models, and a shared space to compare their responses.",
-    status: "Ongoing",
-    live: "https://ai-arena-red.vercel.app/",
-    source: "https://github.com/JJTGG/ai-arena",
-    category: "work",
-    portfolioSection: "featured",
-    featuredInHub: true
-  },
-  {
-    name: "Trading Tools",
-    slug: "trading-tools",
-    type: "Trading / Product",
-    description:
-      "A trading decision-support workspace connecting market information, calculations, risk planning, trade records, and review. It focuses on helping people define and assess decisions rather than executing trades or selling signals.",
-    shortDescription:
-      "A connected workspace for market analysis, trading calculations, risk planning, and review.",
-    status: "Ongoing",
-    live: "https://trading-tools-xi.vercel.app/",
-    source: "https://github.com/JJTGG/trading-tools",
-    category: "work",
-    portfolioSection: "featured",
-    featuredInHub: true
-  },
-  {
-    name: "ClutchTopUp",
-    slug: "clutchtopup",
-    type: "Gaming / Commerce",
-    description:
-      "A gaming top-up service being rebuilt as a standalone commerce system. The intended workflow connects product selection, orders, payments, fulfillment, provider responses, reconciliation, and final results.",
-    shortDescription:
-      "A gaming top-up service being rebuilt around a standalone ordering and fulfillment system.",
-    status: "Rebuilding",
-    source: "https://github.com/JJTGG/clutchtopup",
-    category: "work",
-    portfolioSection: "featured",
-    featuredInHub: true
-  },
-  {
-    name: "Meayu",
-    slug: "meayu",
-    type: "Product / System",
-    description:
-      "A product for turning what you know about someone into a personal digital experience. The creator supplies the context and selected material, then prepares, reviews, approves, and shares the result.",
-    shortDescription:
-      "A way to turn personal context and selected material into a tailored digital experience.",
-    status: "V0 · Foundation",
-    source: "https://github.com/JJTGG/meayu",
-    category: "system",
-    portfolioSection: "systems",
-    featuredInHub: false
-  },
-  {
-    name: "Craftmish",
-    slug: "craftmish",
-    type: "Knowledge / Learning System",
-    description:
-      "A knowledge system for builders that connects technologies, concepts, skills, learning resources, roadmaps, challenges, and projects in one place.",
-    shortDescription:
-      "A connected knowledge and learning system for people who build.",
-    status: "In development",
-    live: "https://craftmish.vercel.app/",
-    source: "https://github.com/JJTGG/craftmish",
-    category: "system",
-    portfolioSection: "systems",
-    featuredInHub: false
-  },
-  {
-    name: "Testing Ground",
-    slug: "testing-ground",
-    type: "Research / Experimentation System",
-    description:
-      "A reusable environment for testing external technologies under controlled conditions and preserving observations. The initial focus is on establishing the environment before adding individual experiments.",
-    shortDescription:
-      "A controlled environment for testing technologies and preserving results.",
-    status: "Early development",
-    live: "https://testing-ground-gilt.vercel.app/",
-    source: "https://github.com/JJTGG/testing-ground",
-    category: "system",
-    portfolioSection: "systems",
-    featuredInHub: false
-  },
-  {
-    name: "CV Generator",
-    slug: "cv-generator",
-    type: "Utility / Experiment",
-    description:
-      "An early CV-generation utility. The project is unfinished, so it is presented as an experiment rather than a completed product.",
-    shortDescription:
-      "An unfinished utility for generating CVs.",
-    status: "Unfinished",
-    live: "https://cv-generator-dusky-ten.vercel.app/",
-    source: "https://github.com/JJTGG/cv-generator",
-    category: "experiment",
-    portfolioSection: "experiments",
-    featuredInHub: false
-  },
-  {
-    name: "AUREN",
-    slug: "auren",
-    type: "Storefront / Experiment",
-    description:
-      "A fashion and lifestyle storefront experiment exploring product presentation, catalogue discovery, and an ecommerce experience designed around the idea of The New Everyday.",
-    shortDescription:
-      "A storefront experiment exploring product presentation and ecommerce experiences.",
-    status: "Experiment",
-    live: "https://auren-store-delta.vercel.app/",
-    source: "https://github.com/JJTGG/auren-store",
-    category: "experiment",
-    portfolioSection: "experiments",
-    featuredInHub: true,
-    credit: "by TGG HUB"
-  },
-  {
-    name: "Fake OS",
-    slug: "fake-os",
-    type: "Browser / Technical",
-    description:
-      "A small desktop-like environment that runs inside a webpage, built with vanilla HTML, CSS, and JavaScript. It explores window management, built-in utilities, draggable interfaces, and persistent settings without a framework.",
-    shortDescription:
-      "A browser-based desktop environment built with vanilla HTML, CSS, and JavaScript.",
-    status: "Experiment",
-    live: "https://jjtgg.github.io/fake-os/",
-    source: "https://github.com/JJTGG/fake-os",
-    category: "experiment",
-    portfolioSection: "experiments",
-    featuredInHub: false
+function getLegacyCategory(
+  category: ProjectCategory
+): Project["category"] {
+  switch (category) {
+    case "Experiments":
+      return "experiment";
+
+    case "Learning & Knowledge":
+    case "Research & Engineering":
+      return "system";
+
+    case "Products & Platforms":
+    case "Tools & Utilities":
+      return "work";
   }
-];
+}
+
+function getPortfolioSection(
+  project: ProjectRecord
+): PortfolioSection {
+  if (project.publicationLevel === "Featured") {
+    return "featured";
+  }
+
+  if (project.category === "Experiments") {
+    return "experiments";
+  }
+
+  return "systems";
+}
+
+function toLegacyProject(
+  project: ProjectRecord
+): Project {
+  return {
+    name: project.name,
+    slug: project.slug,
+    type: project.typeLabel,
+    description: project.description,
+    shortDescription: project.shortDescription,
+    status: project.statusLabel,
+
+    live: project.websiteUrl,
+    source: project.repositoryUrl,
+
+    category: getLegacyCategory(project.category),
+    portfolioSection: getPortfolioSection(project),
+
+    featuredInHub: project.tggHubEcosystem,
+    credit: project.credit
+  };
+}
+
+export const projects: Project[] = projectRecords
+  .filter(
+    (project) =>
+      project.publicationLevel !== "Archive / Private"
+  )
+  .map(toLegacyProject);
