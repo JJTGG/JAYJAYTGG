@@ -24,6 +24,7 @@ const inter = Inter({
 });
 
 const ibmPlexMono = IBM_Plex_Mono({
+  weight: ["400", "500"],
   subsets: ["latin"],
   variable: "--font-ibm-plex-mono",
   display: "swap"
