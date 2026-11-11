@@ -1,6 +1,6 @@
 import type { ProjectRecord } from "./types";
 
-export const projectRecords = [
+export const projectRecords: ProjectRecord[] = [
   {
     slug: "agore",
     name: "Agoré",
@@ -432,4 +432,4 @@ export const projectRecords = [
 
     tggHubEcosystem: false
   }
-] satisfies ProjectRecord[];
+];
