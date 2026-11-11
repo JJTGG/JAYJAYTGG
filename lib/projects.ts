@@ -1,4 +1,4 @@
-import { projectRecords } from "./portfolio/projects";
+import { publicProjectRecords } from "./portfolio";
 import type {
   ProjectCategory,
   ProjectRecord
@@ -77,9 +77,6 @@ function toLegacyProject(
   };
 }
 
-export const projects: Project[] = projectRecords
-  .filter(
-    (project) =>
-      project.publicationLevel !== "Archive / Private"
-  )
-  .map(toLegacyProject);
+export const projects: Project[] = publicProjectRecords.map(
+  toLegacyProject
+);
