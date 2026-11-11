@@ -8,7 +8,10 @@ export { partners } from "./partners";
 export type * from "./types";
 
 export const publicProjectRecords = projectRecords.filter(
-  (project) => project.publicationLevel !== "Archive / Private"
+  (project) =>
+    project.publicationLevel !== "Archive / Private" &&
+    project.availability !== "Private" &&
+    project.availability !== "Internal"
 );
 
 export const featuredProjectRecords = publicProjectRecords.filter(
