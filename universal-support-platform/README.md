@@ -101,11 +101,11 @@ BuildTrace remains the active priority. Return to this project after BuildTrace 
 
 ## Documentation map
 
-* Product scope and requirements
-* Financial model and payment workflows
-* System architecture and technology options
-* Data model and API blueprint
-* Security, privacy and operations
-* Open decisions and launch gates
-* Delivery plan and acceptance criteria
-* Licensing and project governance
+* [Product scope and requirements](product-scope-and-requirements.md)
+* [Financial model and payment workflows](financial-model-and-payment-workflows.md)
+* [System architecture and technology options](system-architecture-and-technology-options.md)
+* [Data model and API blueprint](data-model-and-api-blueprint.md)
+* [Security, privacy and operations](security-privacy-and-operations.md)
+* [Open decisions and launch gates](open-decisions-and-launch-gates.md)
+* [Delivery plan and acceptance criteria](delivery-plan-and-acceptance-criteria.md)
+* [Licensing and project governance](licensing-and-project-governance.md)
