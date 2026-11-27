@@ -11,3 +11,4 @@
   * [Open decisions and launch gates](universal-support-platform/open-decisions-and-launch-gates.md)
   * [Delivery plan and acceptance criteria](universal-support-platform/delivery-plan-and-acceptance-criteria.md)
   * [Licensing and project governance](universal-support-platform/licensing-and-project-governance.md)
+* [Global-first product and project principles](global-first-product-and-project-principles.md)
