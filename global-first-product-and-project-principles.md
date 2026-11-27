@@ -1,7 +1,4 @@
 ---
-description: >-
-  Mandatory TGG HUB principles and qualification gates for product ideas,
-  experiments, and hackathon projects.
 keywords:
   - global first
   - product governance
@@ -9,11 +6,16 @@ keywords:
   - hackathon strategy
   - open source
   - interoperability
+description: >-
+  Mandatory TGG HUB principles and qualification gates for product ideas,
+  experiments, and hackathon projects.
 ---
 
 # Global-first product and project principles
 
-**Status:** Governing policy **Effective date:** 27 November 2026 **Applies to:** TGG HUB product ideas, software projects, experiments, integrations, and hackathon submissions
+* **Status:** Governing policy
+* **Effective date:** 27 November 2026
+* **Applies to:** TGG HUB product ideas, software projects, experiments, integrations, and hackathon submissions
 
 This page defines the standards a project must satisfy before it is selected for implementation. A hackathon deadline, prize pool, sponsor, technology trend, or ability to build something is not sufficient reason to create a product.
 
